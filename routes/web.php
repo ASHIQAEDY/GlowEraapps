@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController; // Make sure to import the ProductController
+use App\Http\Controllers\SkinProfileFormController;
 
 /*
 |----------------------------------------------------------------------
@@ -22,3 +23,4 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::resource('Product', ProductController::class);
+Route::resource('SkinProfileForm', SkinProfileFormController::class);

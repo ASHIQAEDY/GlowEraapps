@@ -33,7 +33,7 @@
                 <div class="card-body">
                     <h5 class="card-title"></h5>
                     <p class="card-text">Skin Assessment</p>
-                    <a href="#" class="btn btn-primary">Click</a> <!-- Placeholder Link -->
+                    <a href="{{ route('SkinProfileForm.create') }}" class="btn btn-primary">Click</a>
                 </div>
             </div>
         </div>

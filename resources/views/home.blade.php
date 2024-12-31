@@ -45,7 +45,8 @@
                 <div class="card-body">
                     <h5 class="card-title"></h5>
                     <p class="card-text">Product</p>
-                    <a href="#" class="btn btn-primary">Click</a> <!-- Placeholder Link -->
+                    <a href="{{ route('Product.create') }}" class="btn btn-primary">Click</a>
+
                 </div>
             </div>
         </div>

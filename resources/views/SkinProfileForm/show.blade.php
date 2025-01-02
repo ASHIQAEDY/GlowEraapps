@@ -1,21 +1,36 @@
 @extends('layouts.app')
-
+<!-- Add this in the <head> section of your layout file -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 @section('content')
 <div class="container">
+     <!-- Button to go back to Home -->
+     <div class="mb-4">
+        <a href="{{ route('home') }}" class="btn btn-secondary p-2">
+            <i class="fa fa-home"></i>
+        </a>
+    </div>
     <h1>Skin Profile Details</h1>
+
+    <!-- Displaying success or error message -->
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @elseif (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
 
     <!-- Displaying Skin Profile Information -->
     <table class="table table-bordered">
+        
         <tr>
-            <th>Form ID</th>
-            <td>{{ $profile->FormID }}</td>
-        </tr>
-        <tr>
-            <th>Total Score</th>
+            <th>Your Total Score : </th>
             <td>{{ $profile->TotalScore }}</td>
         </tr>
         <tr>
-            <th>Concern Level</th>
+            <th>Concern Level :</th>
             <td>
                 @if($profile->InterpretationStatus == 'Excellent Skin Health')
                     Excellent Skin Health
@@ -74,7 +89,13 @@
         </tr>
     </table>
 
-    <!-- Button to go back to the profile list -->
-    <a href="{{ route('SkinProfileForm.index') }}" class="btn btn-primary mt-3">Back to List</a>
+   <!-- Buttons for actions -->
+<a href="{{ route('SkinProfileForm.edit', $profile->FormID) }}" class="btn btn-warning">
+    <i class="fa fa-edit mr-2"></i> Edit Profile
+</a>
+<a href="{{ route('SkinProfileForm.index') }}" class="btn btn-secondary">
+    <i class="fa fa-arrow-left mr-2"></i> Back to List
+</a>
+
 </div>
 @endsection

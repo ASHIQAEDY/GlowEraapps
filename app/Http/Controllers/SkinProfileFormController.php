@@ -41,7 +41,13 @@ class SkinProfileFormController extends Controller
             'Irritation' => 'nullable|integer|min:1|max:5',
             'Firmness' => 'nullable|integer|min:1|max:5',
             'Darkcircles' => 'nullable|integer|min:1|max:5',
-        ]);
+        
+    ], [
+        'required' => 'The :attribute field is required.',
+        'integer' => 'The :attribute field must be an integer.',
+        'min' => 'The :attribute value must be at least 1.',
+        'max' => 'The :attribute value must not exceed 5.',
+    ]);
     
         // Calculate TotalScore as the sum of all input values
         $totalScore = 
@@ -111,35 +117,105 @@ class SkinProfileFormController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, SkinProfileForm $SkinProfileForm)
+    public function update(Request $request, $id)
     {
-        // Validate incoming data
-        $validatedData = $request->validate([
-            'Acne' => 'required|integer|min:1|max:5',
-            'FineLine' => 'required|integer|min:1|max:5',
-            'Darkspots' => 'required|integer|min:1|max:5',
-            'Redness' => 'required|integer|min:1|max:5',
-            'Dryness' => 'required|integer|min:1|max:5',
-            'Oily' => 'required|integer|min:1|max:5',
-            'PoresRate' => 'required|integer|min:1|max:5',
-            'Irritation' => 'required|integer|min:1|max:5',
-            'Firmness' => 'required|integer|min:1|max:5',
-            'Darkcircles' => 'required|integer|min:1|max:5',
+        // Validate only the fields that are sent in the request
+        $request->validate([
+            'Acne' => 'nullable|integer|between:1,5',
+            'FineLine' => 'nullable|integer|between:1,5',
+            'Darkspots' => 'nullable|integer|between:1,5',
+            'Redness' => 'nullable|integer|between:1,5',
+            'Dryness' => 'nullable|integer|between:1,5',
+            'Oily' => 'nullable|integer|between:1,5',
+            'PoresRate' => 'nullable|integer|between:1,5',
+            'Irritation' => 'nullable|integer|between:1,5',
+            'Firmness' => 'nullable|integer|between:1,5',
+            'Darkcircles' => 'nullable|integer|between:1,5',
         ]);
     
-        // Update the profile with the validated data
-        $SkinProfileForm->update($validatedData);
+        // Find the profile by ID
+        $profile = SkinProfileForm::findOrFail($id);
     
-        // Redirect to the skin profile list with a success message
-        return redirect()->route('SkinProfileForm.index')
-                         ->with('success', 'Skin Profile updated successfully!');
+        // Only update the fields that are present in the request
+        if ($request->has('Acne')) {
+            $profile->Acne = $request->Acne;
+        }
+        if ($request->has('FineLine')) {
+            $profile->FineLine = $request->FineLine;
+        }
+        if ($request->has('Darkspots')) {
+            $profile->Darkspots = $request->Darkspots;
+        }
+        if ($request->has('Redness')) {
+            $profile->Redness = $request->Redness;
+        }
+        if ($request->has('Dryness')) {
+            $profile->Dryness = $request->Dryness;
+        }
+        if ($request->has('Oily')) {
+            $profile->Oily = $request->Oily;
+        }
+        if ($request->has('PoresRate')) {
+            $profile->PoresRate = $request->PoresRate;
+        }
+        if ($request->has('Irritation')) {
+            $profile->Irritation = $request->Irritation;
+        }
+        if ($request->has('Firmness')) {
+            $profile->Firmness = $request->Firmness;
+        }
+        if ($request->has('Darkcircles')) {
+            $profile->Darkcircles = $request->Darkcircles;
+        }
+    
+     // Calculate the total score based on the updated attributes
+     $totalScore = $profile->Acne + $profile->FineLine + $profile->Darkspots + 
+     $profile->Redness + $profile->Dryness + $profile->Oily + 
+     $profile->PoresRate + $profile->Irritation + $profile->Firmness + 
+     $profile->Darkcircles;
+
+// Update the total score
+$profile->TotalScore = $totalScore;
+// Set the interpretation status based on the total score using the new ranges
+if ($totalScore >= 10 && $totalScore <= 14) {
+    $profile->InterpretationStatus = 'Excellent Skin Health';
+} elseif ($totalScore >= 15 && $totalScore <= 24) {
+    $profile->InterpretationStatus = 'Good Skin Health';
+} elseif ($totalScore >= 25 && $totalScore <= 34) {
+    $profile->InterpretationStatus = 'Moderate Skin Health';
+} elseif ($totalScore >= 35 && $totalScore <= 44) {
+    $profile->InterpretationStatus = 'Poor Skin Health';
+} elseif ($totalScore >= 45 && $totalScore <= 50) {
+    $profile->InterpretationStatus = 'Very Poor Skin Health';
+}
+
+// Save the changes to the database
+$profile->save();
+
+// Redirect with success message
+return redirect()->route('SkinProfileForm.show', $profile->FormID)->with('success', 'Profile updated successfully!');
     }
     
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(SkinProfileForm $SkinProfileForm)
-    {
-        //
+    
+ /**
+ * Remove the specified resource from storage.
+ */
+public function destroy(SkinProfileForm $SkinProfileForm)
+{
+    // Store the date of the profile being deleted
+    $deletedDate = $SkinProfileForm->created_at->format('d-m-Y');
+
+    // Check if SoftDeletes is used
+    if (method_exists($SkinProfileForm, 'forceDelete')) {
+        // If SoftDeletes is enabled, use forceDelete to permanently delete
+        $SkinProfileForm->forceDelete();
+    } else {
+        // If SoftDeletes is not enabled, use delete()
+        $SkinProfileForm->delete();
     }
+
+    // Redirect back with a success message that includes the deleted date
+    return redirect()->route('SkinProfileForm.index')->with('success', "Skin assessment profile from {$deletedDate} deleted successfully!");
+}
+
 }

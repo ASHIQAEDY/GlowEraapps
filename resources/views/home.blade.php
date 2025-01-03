@@ -83,7 +83,7 @@
 
             <!-- Card 4 -->
             <div class="col">
-                <a href="#" class="card-link"> <!-- Placeholder Link -->
+            <a href="{{ route('visualization')}}" class="card-link">
                     <div class="card">
                         <img src="{{ asset('images/insight.png') }}" class="card-img-top" alt="Insight">
                         <div class="card-body">
@@ -92,6 +92,7 @@
                     </div>
                 </a>
             </div>
+
         </div>
     </div>
 @endsection

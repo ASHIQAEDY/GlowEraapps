@@ -24,3 +24,8 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::resource('Product', ProductController::class);
 Route::resource('SkinProfileForm', SkinProfileFormController::class);
+Route::get('views/SkinProfileForm/visualization', [SkinProfileFormController::class, 'visualization'])->name('visualization');
+Route::get('SkinProfileForm/{id}', [SkinProfileFormController::class, 'show'])->name('SkinProfileForm.show');
+
+
+

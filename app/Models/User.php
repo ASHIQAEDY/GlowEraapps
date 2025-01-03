@@ -42,4 +42,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    // Define the one-to-many relationship (User has many SkinProfileForms)
+    public function SkinProfileForms()
+    {
+        return $this->hasMany(SkinProfileForm::class);
+    }
+
+
 }

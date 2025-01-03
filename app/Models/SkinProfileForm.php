@@ -31,6 +31,14 @@ class SkinProfileForm extends Model
         'InterpretationStatus',
     ];
 
+
+     // Define the inverse one-to-many relationship (SkinProfileForm belongs to User)
+     public function user()
+     {
+         return $this->belongsTo(User::class);
+     }
+
+
     // Optional: Add custom methods, relationships, etc.
     protected $dates = ['deleted_at']; // This enables SoftDeletes
 }

@@ -79,6 +79,10 @@ class SkinProfileFormController extends Controller
         $validatedData['TotalScore'] = $totalScore;
         $validatedData['InterpretationStatus'] = $InterpretationStatus;
 
+
+         // Associate the form with the logged-in user
+    $validatedData['user_id'] = auth()->user()->id;
+    
         // Save the data in the database
         SkinProfileForm::create($validatedData);
     
@@ -188,14 +192,15 @@ if ($totalScore >= 10 && $totalScore <= 14) {
 } elseif ($totalScore >= 45 && $totalScore <= 50) {
     $profile->InterpretationStatus = 'Very Poor Skin Health';
 }
+// Track who updated the profile
+$profile->user_id = auth()->id(); // Store the current user's ID
+ // Save the changes to the database
+ $profile->save();
 
-// Save the changes to the database
-$profile->save();
+ // Redirect with success message, ensure route is using the correct parameter (id or FormID)
+ return redirect()->route('SkinProfileForm.show', $profile->FormID)->with('success', 'Profile updated successfully!');
 
-// Redirect with success message
-return redirect()->route('SkinProfileForm.show', $profile->FormID)->with('success', 'Profile updated successfully!');
-    }
-    
+}  
     
  /**
  * Remove the specified resource from storage.
@@ -218,4 +223,12 @@ public function destroy(SkinProfileForm $SkinProfileForm)
     return redirect()->route('SkinProfileForm.index')->with('success', "Skin assessment profile from {$deletedDate} deleted successfully!");
 }
 
+public function visualization()
+{
+    return view('SkinProfileForm.visualization'); // Make sure this is the correct view name
+    
 }
+
+
+}
+

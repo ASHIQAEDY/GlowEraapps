@@ -29,6 +29,7 @@ class SkinProfileForm extends Model
         'Darkcircles',
         'TotalScore',
         'InterpretationStatus',
+        'user_id', // Make sure user_id is here
     ];
 
 

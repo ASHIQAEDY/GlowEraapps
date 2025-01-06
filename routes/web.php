@@ -26,6 +26,6 @@ Route::resource('Product', ProductController::class);
 Route::resource('SkinProfileForm', SkinProfileFormController::class);
 Route::get('views/SkinProfileForm/visualization', [SkinProfileFormController::class, 'visualization'])->name('visualization');
 Route::get('SkinProfileForm/{id}', [SkinProfileFormController::class, 'show'])->name('SkinProfileForm.show');
-
+Route::post('/skin-profile/visualization', [SkinProfileFormController::class, 'fetchDataByDate'])->name('SkinProfileForm.fetchDataByDate');
 
 

@@ -49,5 +49,9 @@ class User extends Authenticatable
         return $this->hasMany(SkinProfileForm::class);
     }
 
-
+// Define the one-to-many relationship - a user can have many products
+public function products()
+{
+    return $this->hasMany(Product::class, 'userid'); // Ensure 'userid' is the foreign key
+}
 }

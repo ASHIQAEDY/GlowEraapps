@@ -225,10 +225,19 @@ public function destroy(SkinProfileForm $SkinProfileForm)
 
 public function visualization()
 {
-    return view('SkinProfileForm.visualization'); // Make sure this is the correct view name
+    $user_id = auth()->id(); // Get the logged-in user's ID
+    $profiles = SkinProfileForm::where('user_id', $user_id)->get();
+    return view('SkinProfileForm.visualization', compact('profiles'));
     
 }
-
+public function fetchDataByDate(Request $request)
+{$user_id = auth()->id(); // Get the logged-in user's ID
+    $selectedDate = $request->input('date');
+    $profiles = SkinProfileForm::where('user_id', $user_id)
+                               ->whereDate('created_at', $selectedDate)
+                               ->get();
+    return response()->json($profiles);
+}
 
 }
 

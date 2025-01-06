@@ -1,7 +1,40 @@
 @extends('layouts.app')
   <!-- Add this in the <head> section of your layout file -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-@section('content')
+
+  @section('content')
+     <!-- Add custom styles to match home page background -->
+     <style>
+        body {
+            background-color:rgb(91, 65, 110) !important; /* Indigo - same as home */
+            color: white;
+        }
+
+        .card {
+            background-color: rgba(229, 221, 235, 0.53); /* Same as home cards */
+            color: black;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.8);
+            transition: box-shadow 0.3s ease-in-out;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        .btn-outline-primary {
+            color: white !important; /* Force text color to white */
+    border-color: white !important; /* Optional: Match border color to white */
+        }
+        .btn-outline-primary.active, 
+.btn-outline-primary:hover, 
+.btn-outline-primary:focus {
+    background-color: rgb(206, 154, 243) !important; /* Ensure active button stays white */
+    color: rgb(91, 65, 110) !important; /* Contrast text color for active buttons */
+}
+        .btn-group-toggle .btn {
+            border-radius: 4px;
+        }
+    </style>
 <div class="container">
       <!-- Button to go back to Home -->
     <div class="mb-4">
@@ -84,6 +117,7 @@
         @endforeach
 
      <!-- Buttons Section -->
+     
 <div class="form-group mt-4 d-flex flex-column flex-md-row justify-content-between">
     <button type="submit" class="btn btn-success mb-2 mb-md-0 text-nowrap" style="width: auto;">
         <i class="fa fa-save mr-2"></i> Save Profile
@@ -92,6 +126,7 @@
     <button type="reset" class="btn btn-warning mb-2 mb-md-0 text-nowrap" style="width: auto;">
         <i class="fa fa-undo mr-2"></i> Reset Form
     </button>
+   
 
     <a href="{{ route('SkinProfileForm.index') }}" class="btn btn-primary text-nowrap" style="width: auto;">
         <i class="fa fa-eye mr-2"></i> View Recent Forms

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container-fluid">
+<div class="container-fluid" style="background-color:rgb(91, 65, 110)"> <!-- Purple background added here -->
     <!-- Button to go back to Home -->
     <div class="mb-4">
         <a href="{{ route('home') }}" class="btn btn-secondary p-2">
@@ -21,7 +21,7 @@
 
     <!-- Displaying existing skin profiles -->
     <div class="table-responsive mb-4">
-        <table class="table table-bordered">
+        <table class="table table-bordered"style="background-color: #d4edda; border: 2px solid #155724;"> <!-- Green background -->
             <thead class="thead-dark">
                 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
@@ -29,6 +29,10 @@
                     <th>Date</th>
                     <th>Total Score</th>
                     <th>Concern Level</th>
+                      <!-- Add 'User ID' column conditionally -->
+                      @if(Auth::user()->UserLevel == 0)
+                        <th>User ID</th>
+                    @endif
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -52,6 +56,12 @@
                             Not Available
                         @endif
                     </td>
+                    
+                      <!-- Conditionally show User ID for UserLevel 0 -->
+                      @if(Auth::user()->UserLevel == 0)
+                        <td>{{ $profile->user_id }}</td>
+                    @endif
+
                     <td>
                         <a href="{{ route('SkinProfileForm.show', $profile->FormID) }}" class="btn btn-info btn-sm m-1">
                             <i class="fas fa-eye"></i> View
@@ -74,7 +84,6 @@
     }
 </script>
 
-
                     </td>
                 </tr>
                 @endforeach
@@ -82,42 +91,42 @@
         </table>
     </div>
 
-    <!-- Score Interpretation Information -->
-    <div class="text-center mb-4">
-        <h4>Score Interpretation:</h4>
-        <p><strong>Based on the total score, the user's skin health is interpreted as follows:</strong></p>
-        
-        <table class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>Score Range</th>
-                    <th>Skin Health Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><strong>10-14</strong></td>
-                    <td>Excellent Skin Health</td>
-                </tr>
-                <tr>
-                    <td><strong>15-24</strong></td>
-                    <td>Good Skin Health</td>
-                </tr>
-                <tr>
-                    <td><strong>25-34</strong></td>
-                    <td>Moderate Skin Health</td>
-                </tr>
-                <tr>
-                    <td><strong>35-44</strong></td>
-                    <td>Poor Skin Health</td>
-                </tr>
-                <tr>
-                    <td><strong>45-50</strong></td>
-                    <td>Very Poor Skin Health</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+   <!-- Score Interpretation Information -->
+<div class="text-center mb-4">
+    <h4>Score Interpretation:</h4>
+    <p><strong>Based on the total score, the user's skin health is interpreted as follows:</strong></p>
+    
+    <table class="table table-bordered" style="background-color:rgb(35, 83, 46); border: 2px solid #155724;">
+        <thead style="background-color:rgb(53, 16, 75); color: white;">
+            <tr>
+                <th>Score Range</th>
+                <th>Skin Health Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>10-14</strong></td>
+                <td>Excellent Skin Health</td>
+            </tr>
+            <tr>
+                <td><strong>15-24</strong></td>
+                <td>Good Skin Health</td>
+            </tr>
+            <tr>
+                <td><strong>25-34</strong></td>
+                <td>Moderate Skin Health</td>
+            </tr>
+            <tr>
+                <td><strong>35-44</strong></td>
+                <td>Poor Skin Health</td>
+            </tr>
+            <tr>
+                <td><strong>45-50</strong></td>
+                <td>Very Poor Skin Health</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
     <div class="text-center mt-4">
         <a href="{{ route('SkinProfileForm.create') }}" class="btn btn-primary btn-lg">

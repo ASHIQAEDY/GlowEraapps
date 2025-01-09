@@ -11,12 +11,19 @@ class ProductController extends Controller
     // Display a listing of the products
     public function index()
     {
-        // Paginate the products to display only 2 per page
-    $products = Product::paginate(3);
+         $user = auth()->user(); // Get the logged-in user
 
+    if ($user->UserLevel == 0) { 
+        // If the user is an admin (user_level 0), fetch all products with pagination
+        $products = Product::paginate(3);
+    } else {
+        // Otherwise, fetch only the products of the logged-in user with pagination
+        $products = Product::where('userid', $user->id)->paginate(3);
+    }
 
-        // Return the index view with the products
-        return view('Product.index', compact('products'));
+    // Return the index view with the products
+    return view('Product.index', compact('products'));
+       
     }
 
     // Show the form for creating a new product
@@ -37,11 +44,10 @@ class ProductController extends Controller
            'ExpiryDate' => 'required|date|after:purchased_date',
            'image' => 'nullable|image|mimes:png,jpg,jpeg|max:2048', // Validate image file (PNG, JPG, JPEG)
        ]);
-   
-        // Handle the image upload
-    if ($request->hasFile('image')) {
-        $imageName = time() . '.' . $request->image->extension(); // Generate a unique name for the image
-        $request->image->storeAs('public/images', $imageName); // Store the image in the public/images folder
+
+       if ($request->hasFile('image')) {
+        $imageName = time() . '.' . $request->image->extension(); // Generate unique name
+        $request->image->move(public_path('products'), $imageName); // Store in public/products
     }
 
    
@@ -87,27 +93,27 @@ class ProductController extends Controller
     // Find the product by ID
     $product = Product::findOrFail($id);
 
-    // Handle the image upload if a new image is provided
-    if ($request->hasFile('image')) {
-        // Delete the old image if it exists
-        if ($product->image) {
-            Storage::delete('public/images/' . $product->image);
-        }
-
-        // Store the new image
-        $imageName = time() . '.' . $request->image->extension();
-        $request->image->storeAs('public/images', $imageName);
-        $product->image = $imageName; // Update the image field
-    }
-
     // Update the product with the validated data
     $product->update([
         'BrandName' => $validated['BrandName'],
         'PurchasedDate' => $validated['PurchasedDate'],
         'OpenDate' => $validated['OpenDate'],
         'ExpiryDate' => $validated['ExpiryDate'],
-        'image' => isset($imageName) ? $imageName : $product->image, // Update image if a new one is uploaded
     ]);
+
+   if ($request->hasFile('image')) {
+        $imgName = str_replace('/products/', '', $product->image);
+        $imagePath = public_path('products/' . $imgName); // Get the full path to the image
+        if (file_exists($imagePath)) { // Check if the file exists
+            unlink($imagePath); // Delete the file
+        }
+        $imageName = time() . '.' . $request->image->extension(); // Generate unique name
+        $request->image->move(public_path('products'), $imageName); // Store in public/products
+        $imageName;
+        $product->update([
+            'image' => $imageName, // Update image if a new one is uploaded
+        ]);
+    }
 
     // Redirect to the index page with a success message
     return redirect()->route('Product.index')->with('status', 'Product updated successfully!');
@@ -120,16 +126,36 @@ public function show($id)
 
     // Return the show view with the product details
     return view('Product.show', compact('product'));
+    if ($request->hasFile('image')) {
+        $imgName = str_replace('/products/', '', $product->image);
+        $imagePath = public_path('products/' . $imgName); // Get the full path to the image
+        if (file_exists($imagePath)) { // Check if the file exists
+            unlink($imagePath); // Delete the file
+        }
+        $imageName = time() . '.' . $request->image->extension(); // Generate unique name
+        $request->image->move(public_path('products'), $imageName); // Store in public/products
+        $imageName;
+        $product->update([
+            'image' => $imageName, // Update image if a new one is uploaded
+        ]);}
+
 }
 
-    // Remove the specified product from storage
+      // Remove the specified product from storage
     public function destroy($id)
     {
         // Find the product by ID and delete it
         $product = Product::findOrFail($id);
+        $imgName = str_replace('/products/', '', $product->image);
+        $imagePath = public_path('products/' . $imgName); // Get the full path to the image
+        if (file_exists($imagePath)) { // Check if the file exists
+            unlink($imagePath); // Delete the file
+        }
         $product->delete();
 
         // Redirect to the index page with a success message
         return redirect()->route('Product.index')->with('status', 'Product deleted successfully!');
     }
+
+    
 }

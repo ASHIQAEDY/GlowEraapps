@@ -25,11 +25,11 @@ class Product extends Model
     {
         return $this->belongsTo(User::class, 'userid'); // Ensure 'userid' is the foreign key
     }
-    
+
      // Add an accessor for the image to easily fetch the full URL
      public function getImageAttribute($value)
      {
-         return $value ? asset('storage/' . $value) : null;
+         return $value ? asset('products/' . $value) : null;
      }
 
 }

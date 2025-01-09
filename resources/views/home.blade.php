@@ -14,6 +14,7 @@
             color: black; /* Text color for cards */
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.8); /* 50% opacity shadow */
             transition: box-shadow 0.3s ease-in-out; /* Smooth transition for hover effect */
+            
         }
 
         .card:hover {
@@ -128,20 +129,66 @@
     </div>
 
     <!-- Bottom Navbar -->
-    <div class="bottom-navbar">
+<div class="bottom-navbar">
     <a href="#">
-           <i class="fas fa-info-circle"></i>
-            About us
-        </a>
-        <a href="{{ route('home') }}">
+        <i class="fas fa-info-circle"></i>
+        <span>About Us</span>
+    </a>
+    <a href="{{ route('home') }}">
         <i class="fas fa-home"></i>
-            Home
-        </a>
-        
-        <a href="#">
-        <i class="fas fa-lightbulb"></i> 
-            Tips
-        </a>
-        
-    </div>
+        <span>Home</span>
+    </a>
+    <a href="#">
+        <i class="fas fa-lightbulb"></i>
+        <span>Tips</span>
+    </a>
+</div>
+
+<style>
+    /* General Bottom Navbar Styles */
+    .bottom-navbar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgb(84, 63, 100); /* Indigo color */
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding: 10px 0;
+        box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+    }
+
+    .bottom-navbar a {
+        display: flex;
+        flex-direction: column; /* Align icons above text */
+        justify-content: center;
+        align-items: center;
+        color: white;
+        text-decoration: none;
+        font-size: 14px;
+        padding: 5px;
+        transition: color 0.3s ease, transform 0.3s ease;
+    }
+
+    .bottom-navbar a:hover {
+        color: #FFD700; /* Gold color for hover */
+        transform: scale(1.1); /* Slightly enlarge on hover */
+    }
+
+    .bottom-navbar i {
+        font-size: 20px; /* Icon size */
+        margin-bottom: 4px; /* Space between icon and text */
+    }
+
+    .bottom-navbar span {
+        font-size: 12px; /* Text size below the icons */
+    }
+
+    /* Make sure the page content doesn't overlap the navbar */
+    .container {
+        padding-bottom: 10px; /* Add padding equal to navbar height */
+    }
+</style>
 @endsection

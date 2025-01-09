@@ -12,8 +12,17 @@ class SkinProfileFormController extends Controller
      */
     public function index()
     {
+        $user = auth()->user(); // Get the logged-in user
+
+    if ($user->UserLevel == 0) { 
+        // If the user is an admin (user_level 0), fetch all forms
         $forms = SkinProfileForm::all();
-        return view('SkinProfileForm.index', compact('forms'));
+    } else {
+        // Otherwise, fetch only the forms of the logged-in user
+        $forms = SkinProfileForm::where('user_id', $user->id)->get();
+    }
+
+    return view('SkinProfileForm.index', compact('forms'));
     }
 
     /**

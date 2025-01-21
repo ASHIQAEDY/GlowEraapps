@@ -122,7 +122,7 @@
         <i class="fa fa-home"></i> Back to Home
     </a>
 
-    <h1>Create New Product</h1>
+    <h1>Add your Product :</h1>
     <form action="{{ route('Product.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
@@ -170,7 +170,7 @@
         <div class="button-group mt-3">
             <button type="submit" class="btn btn-success" style="background-color:rgb(176, 156, 194);">Add Product</button>
             <a href="{{ route('Product.index') }}" class="btn btn-primary text-nowrap" style="width: auto; background-color:rgb(232, 63, 238);">
-                <i class="fa fa-eye mr-2"></i> View Recent Forms
+                <i class="fa fa-eye mr-2"></i> View adeed Products
             </a>
         </div>
     </form>
@@ -181,7 +181,7 @@
 <div class="popup" id="popup">
     <button class="close-btn" onclick="closePopup()">&times;</button>
     <p>Welcome!</p><p> Create your new product, fill in the details and click "Add Product".</p>
-      <p>   You can also view recent your recent forms by clicking "View Recent Forms".</p>
+      <p>   You can also view recent your recent forms by clicking "View adeed Products".</p>
 </div>
 
 <script>

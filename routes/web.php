@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController; // Make sure to import the ProductController
 use App\Http\Controllers\SkinProfileFormController;
+use App\Http\Controllers\TipsController;
+use App\Http\Controllers\AboutusController;
 
 /*
 |----------------------------------------------------------------------
@@ -27,5 +29,9 @@ Route::resource('SkinProfileForm', SkinProfileFormController::class);
 Route::get('views/SkinProfileForm/visualization', [SkinProfileFormController::class, 'visualization'])->name('visualization');
 Route::get('SkinProfileForm/{id}', [SkinProfileFormController::class, 'show'])->name('SkinProfileForm.show');
 Route::post('/skin-profile/visualization', [SkinProfileFormController::class, 'fetchDataByDate'])->name('SkinProfileForm.fetchDataByDate');
-
-
+Route::get('/tips', [TipsController::class, 'index'])->name('Tips.index');
+Route::get('/tips/create', [TipsController::class, 'create'])->name('Tips.create');
+Route::resource('Tips', TipsController::class);
+Route::get('/tips/{id}', [TipsController::class, 'show'])->name('Tips.show');
+Route::resource('Aboutus', AboutusController::class);
+Route::get('/Aboutus', [AboutusController::class, 'index'])->name('Aboutus.index');

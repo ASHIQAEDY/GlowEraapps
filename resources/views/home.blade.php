@@ -130,7 +130,7 @@
 
     <!-- Bottom Navbar -->
 <div class="bottom-navbar">
-    <a href="#">
+    <a href="{{  route('Aboutus.index')}}">
         <i class="fas fa-info-circle"></i>
         <span>About Us</span>
     </a>
@@ -138,7 +138,7 @@
         <i class="fas fa-home"></i>
         <span>Home</span>
     </a>
-    <a href="#">
+    <a href="{{  route('Tips.index')}}">
         <i class="fas fa-lightbulb"></i>
         <span>Tips</span>
     </a>

@@ -65,7 +65,7 @@ class ProductController extends Controller
        ]);
    
        // Redirect to the 'products.index' page with a success message
-       return redirect()->route('Product.index')->with('status', 'Product added successfully!');
+       return redirect()->route('Product.index')->with('status', 'Product Added successfully!');
    }
 
 

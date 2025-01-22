@@ -5,26 +5,30 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Notifications\ProductExpiryNotification;
 
 class ProductController extends Controller
 {
-    // Display a listing of the products
     public function index()
-    {
-         $user = auth()->user(); // Get the logged-in user
+{
+    $user = auth()->user(); // Get the logged-in user
 
     if ($user->UserLevel == 0) { 
-        // If the user is an admin (user_level 0), fetch all products with pagination
-        $products = Product::paginate(3);
+        // If the user is an admin (user_level 0), fetch all products ordered by latest with pagination
+        $products = Product::latest()->paginate(3);
     } else {
-        // Otherwise, fetch only the products of the logged-in user with pagination
-        $products = Product::where('userid', $user->id)->paginate(3);
+        // Otherwise, fetch only the latest products of the logged-in user with pagination
+        $products = Product::where('userid', $user->id)->latest()->paginate(3);
     }
 
     // Return the index view with the products
     return view('Product.index', compact('products'));
-       
-    }
+
+    $notifications = auth()->user()->notifications;
+
+    return view('Product.index', compact('notifications'));
+}
+
 
     // Show the form for creating a new product
     public function create()
@@ -142,20 +146,33 @@ public function show($id)
 }
 
       // Remove the specified product from storage
-    public function destroy($id)
-    {
-        // Find the product by ID and delete it
-        $product = Product::findOrFail($id);
-        $imgName = str_replace('/products/', '', $product->image);
-        $imagePath = public_path('products/' . $imgName); // Get the full path to the image
-        if (file_exists($imagePath)) { // Check if the file exists
-            unlink($imagePath); // Delete the file
-        }
-        $product->delete();
+      public function destroy($id)
+{
+    // Find the product by ID
+    $product = Product::findOrFail($id);
 
-        // Redirect to the index page with a success message
-        return redirect()->route('Product.index')->with('status', 'Product deleted successfully!');
+    // Delete associated image (if exists)
+    $imgName = str_replace('/products/', '', $product->image);
+    $imagePath = public_path('products/' . $imgName); // Get the full path to the image
+    if (file_exists($imagePath)) {
+        unlink($imagePath); // Delete the file
     }
 
+    // Delete the product
+    $product->delete();
+
+    // Find the notification for the authenticated user that is associated with the product
+    $notification = auth()->user()->notifications()->where('data->product_id', $id)->first();
+
+    // Delete the notification if it exists
+    if ($notification) {
+        $notification->delete(); // Delete the notification
+    }
+
+    // Redirect to the index page with a success message
+    return redirect()->route('Product.index')->with('status', 'Product and notification deleted successfully!');
+}
+      
+    
     
 }

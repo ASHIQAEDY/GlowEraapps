@@ -114,6 +114,51 @@
     .popup.slide-out {
         animation: slideOut 0.5s forwards;
     }
+    /* General Bottom Navbar Styles */
+    .bottom-navbar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgb(84, 63, 100); /* Indigo color */
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding: 10px 0;
+        box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+    }
+
+    .bottom-navbar a {
+        display: flex;
+        flex-direction: column; /* Align icons above text */
+        justify-content: center;
+        align-items: center;
+        color: white;
+        text-decoration: none;
+        font-size: 14px;
+        padding: 5px;
+        transition: color 0.3s ease, transform 0.3s ease;
+    }
+
+    .bottom-navbar a:hover {
+        color: #FFD700; /* Gold color for hover */
+        transform: scale(1.1); /* Slightly enlarge on hover */
+    }
+
+    .bottom-navbar i {
+        font-size: 20px; /* Icon size */
+        margin-bottom: 4px; /* Space between icon and text */
+    }
+
+    .bottom-navbar span {
+        font-size: 12px; /* Text size below the icons */
+    }
+
+    /* Make sure the page content doesn't overlap the navbar */
+    .container {
+        padding-bottom: 80px; /* Adjusted padding to the bottom */
+    }
 </style>
 
 @section('content')
@@ -170,7 +215,7 @@
         <div class="button-group mt-3">
             <button type="submit" class="btn btn-success" style="background-color:rgb(176, 156, 194);">Add Product</button>
             <a href="{{ route('Product.index') }}" class="btn btn-primary text-nowrap" style="width: auto; background-color:rgb(232, 63, 238);">
-                <i class="fa fa-eye mr-2"></i> View adeed Products
+                <i class="fa fa-eye mr-2"></i> View added Products
             </a>
         </div>
     </form>
@@ -181,7 +226,7 @@
 <div class="popup" id="popup">
     <button class="close-btn" onclick="closePopup()">&times;</button>
     <p>Welcome!</p><p> Create your new product, fill in the details and click "Add Product".</p>
-      <p>   You can also view recent your recent forms by clicking "View adeed Products".</p>
+      <p>   You can also view your recent forms by clicking "View added Products".</p>
 </div>
 
 <script>
@@ -202,4 +247,20 @@
         }, 500); // Match the duration of the slide-out animation
     }
 </script>
+
+<!-- Bottom Navbar -->
+<div class="bottom-navbar">
+    <a href="{{ route('Aboutus.index') }}">
+        <i class="fas fa-info-circle"></i>
+        <span>About Us</span>
+    </a>
+    <a href="{{ route('home') }}">
+        <i class="fas fa-home"></i>
+        <span>Home</span>
+    </a>
+    <a href="{{ route('Tips.index') }}">
+        <i class="fas fa-lightbulb"></i>
+        <span>Tips</span>
+    </a>
+</div>
 @endsection

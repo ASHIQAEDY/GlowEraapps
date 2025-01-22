@@ -9,6 +9,7 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         max-width: 100%; /* Full width for better readability on mobile */
         margin: auto; /* Center the container */
+        padding-bottom: 120px; /* Increased padding to the bottom */
     }
     .btn-secondary, .btn-primary, .btn-success {
         background-color: #4b0082; /* Dark purple button color */
@@ -61,35 +62,30 @@
     /* Centering buttons */
     .button-group {
         display: flex;
-        flex-direction: column;
-        align-items: center;
+        justify-content: center; /* Center the buttons */
         gap: 10px; /* Space between buttons */
-    }
-    @media (min-width: 576px) {
-        .button-group {
-            flex-direction: row;
-        }
     }
     /* List View */
     .list-view .product-item {
         display: flex;
-        flex-direction: row;
+        flex-direction: column; /* Display products vertically */
         align-items: center;
     }
     .list-view .product-item .card {
         display: flex;
-        flex-direction: row;
+        flex-direction: column; /* Display card content vertically */
         align-items: center;
         width: 100%;
     }
     .list-view .product-item .card img {
         width: 100px;
         height: 100px;
-        margin-right: 15px;
+        margin-bottom: 15px; /* Space below image */
     }
     .list-view .product-item .card-body {
         display: flex;
         flex-direction: column;
+        align-items: center;
     }
     .alert.alert-info {
         background-color: #f3e5f5; /* Light purple background */
@@ -131,6 +127,51 @@
         opacity: 1;
         transform: translateY(0);
     }
+    /* General Bottom Navbar Styles */
+    .bottom-navbar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgb(84, 63, 100); /* Indigo color */
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding: 10px 0;
+        box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+    }
+
+    .bottom-navbar a {
+        display: flex;
+        flex-direction: column; /* Align icons above text */
+        justify-content: center;
+        align-items: center;
+        color: white;
+        text-decoration: none;
+        font-size: 14px;
+        padding: 5px;
+        transition: color 0.3s ease, transform 0.3s ease;
+    }
+
+    .bottom-navbar a:hover {
+        color: #FFD700; /* Gold color for hover */
+        transform: scale(1.1); /* Slightly enlarge on hover */
+    }
+
+    .bottom-navbar i {
+        font-size: 20px; /* Icon size */
+        margin-bottom: 4px; /* Space between icon and text */
+    }
+
+    .bottom-navbar span {
+        font-size: 12px; /* Text size below the icons */
+    }
+
+    /* Make sure the page content doesn't overlap the navbar */
+    .container {
+        padding-bottom: 120px; /* Adjusted padding to the bottom */
+    }
 </style>
 
 @section('content')
@@ -148,23 +189,30 @@
         </div>
     @endif
 
-    <!-- Display Notifications -->
-    @if(Auth::user()->notifications->count() > 0)
-        <div class="alert alert-info mb-4">
-            <h4>Notifications</h4>
-            <ul class="list-group">
-                @foreach(Auth::user()->notifications as $notification)
-                    <li class="list-group-item">
+   <!-- Display Notifications -->
+@if(Auth::user()->notifications->count() > 0)
+    <div class="alert alert-info mb-4">
+        <h4>Notifications</h4>
+        <ul class="list-group">
+            @foreach(Auth::user()->notifications as $notification)
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>
                         {{ $notification->data['brand_name'] }} is about to expire on {{ $notification->data['expiry_date'] }}.
-                        <a href="{{ route('Product.show', $notification->data['product_id']) }}" class="btn btn-primary btn-sm">View Product</a>
-                    </li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+                    </span>
+                    <!-- Delete Notification Button -->
+                    <form action="{{ route('Product.destroy', $notification->data['product_id']) }}" method="POST" style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                </li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 
     <!-- Mobile View Table Conversion -->
-    <div class="row" id="productContainer">
+    <div class="row list-view" id="productContainer">
         @foreach($products as $product)
             <div class="col-12 col-sm-6 col-md-4 mb-3 product-item">
                 <!-- Card for each product -->
@@ -188,79 +236,143 @@
                             <p class="card-text"><strong>Image:</strong>
                                 <img src="{{$product->image}}" style="width:70px;height:70px;">
                             </p>
-                        @endif
+                            @endif
 
-                        <!-- Actions: Edit & Delete -->
-                        <div class="d-flex justify-content-center">
-                            <!-- Edit Button -->
-                            <a href="{{ route('Product.edit', $product->ProductID) }}" class="btn btn-primary btn-sm mx-2">
-                                <i class="fas fa-edit"></i> Edit
-                            </a>
+<!-- Actions: Edit & Delete -->
+<div class="button-group">
+    <!-- Edit Button -->
+    <a href="{{ route('Product.edit', $product->ProductID) }}" class="btn btn-primary btn-sm">
+        <i class="fas fa-edit"></i> Edit
+    </a>
 
-                            <!-- Delete Button -->
-                            <form action="{{ route('Product.destroy', $product->ProductID) }}" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm mx-2" onclick="return confirm('Are you sure you want to delete this product?')">
-                                    <i class="fas fa-trash-alt"></i> Delete
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @endforeach
-    </div>
+    <!-- Delete Button -->
+    <form action="{{ route('Product.destroy', $product->ProductID) }}" method="POST" style="display:inline;">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this product?')">
+            <i class="fas fa-trash-alt"></i> Delete
+        </button>
+    </form>
+</div>
+</div>
+</div>
+</div>
+@endforeach
+</div>
 
-    <!-- Popup messages -->
-    <div id="popupContainer"></div>
+<!-- Popup messages -->
+<div id="popupContainer"></div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const messages = [
-                "Welcome to the Product Page!",
-                "Here you can view all your products.",
-                "Use the Edit button to modify product details.",
-                "Use the Delete button to remove a product.",
-                "Check your notifications for product expiry alerts."
-            ];
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+const messages = [
+"Welcome to the Product Page!",
+"Here you can view all your products.",
+"Use the Edit button to modify product details.",
+"Use the Delete button to remove a product.",
+"Check your notifications for product expiry alerts."
+];
 
-            let currentMessageIndex = 0;
+let currentMessageIndex = 0;
 
-            function showNextMessage() {
-                if (currentMessageIndex < messages.length) {
-                    const message = messages[currentMessageIndex];
-                    const popup = document.createElement('div');
-                    popup.className = 'popup-message';
-                    popup.textContent = message;
+function showNextMessage() {
+if (currentMessageIndex < messages.length) {
+const message = messages[currentMessageIndex];
+const popup = document.createElement('div');
+popup.className = 'popup-message';
+popup.textContent = message;
 
-                    document.getElementById('popupContainer').appendChild(popup);
+document.getElementById('popupContainer').appendChild(popup);
 
-                    setTimeout(() => {
-                        popup.classList.add('show');
-                    }, 100);
+setTimeout(() => {
+popup.classList.add('show');
+}, 100);
 
-                    setTimeout(() => {
-                        popup.classList.remove('show');
-                        setTimeout(() => {
-                            popup.remove();
-                            showNextMessage();
-                        }, 500);
-                    }, 3000);
+setTimeout(() => {
+popup.classList.remove('show');
+setTimeout(() => {
+    popup.remove();
+    showNextMessage();
+}, 500);
+}, 3000);
 
-                    currentMessageIndex++;
-                }
-            }
+currentMessageIndex++;
+}
+}
 
-            showNextMessage();
-        });
-    </script>
+showNextMessage();
+});
+</script>
 
-    <!-- Pagination Links -->
-    <div class="d-flex justify-content-center mt-4">
-        <div class="pagination-custom">
-            {{ $products->links('pagination::bootstrap-4') }}
-        </div>
-    </div>
+<!-- Pagination Links -->
+<div class="d-flex justify-content-center mt-4">
+<div class="pagination-custom">
+{{ $products->links('pagination::bootstrap-4') }}
+</div>
+</div>
 </div>
 @endsection
+
+<!-- Bottom Navbar -->
+<div class="bottom-navbar">
+<a href="{{ route('Aboutus.index') }}">
+<i class="fas fa-info-circle"></i>
+<span>About Us</span>
+</a>
+<a href="{{ route('home') }}">
+<i class="fas fa-home"></i>
+<span>Home</span>
+</a>
+<a href="{{ route('Tips.index') }}">
+<i class="fas fa-lightbulb"></i>
+<span>Tips</span>
+</a>
+</div>
+
+<style>
+/* General Bottom Navbar Styles */
+.bottom-navbar {
+position: fixed;
+bottom: 0;
+left: 0;
+right: 0;
+background-color: rgb(84, 63, 100); /* Indigo color */
+display: flex;
+justify-content: space-around;
+align-items: center;
+padding: 10px 0;
+box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.2);
+z-index: 1000;
+}
+
+.bottom-navbar a {
+display: flex;
+flex-direction: column; /* Align icons above text */
+justify-content: center;
+align-items: center;
+color: white;
+text-decoration: none;
+font-size: 14px;
+padding: 5px;
+transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.bottom-navbar a:hover {
+color: #FFD700; /* Gold color for hover */
+transform: scale(1.1); /* Slightly enlarge on hover */
+}
+
+.bottom-navbar i {
+font-size: 20px; /* Icon size */
+margin-bottom: 4px; /* Space between icon and text */
+}
+
+.bottom-navbar span {
+font-size: 12px; /* Text size below the icons */
+}
+
+/* Make sure the page content doesn't overlap the navbar */
+.container {
+padding-bottom: 40px; /* Adjusted padding to the bottom */
+}
+</style>

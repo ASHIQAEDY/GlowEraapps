@@ -20,5 +20,4 @@ class Aboutus extends Model
         'visual',
         'version',
     ];
-    
 }

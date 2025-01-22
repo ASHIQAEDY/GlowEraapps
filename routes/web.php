@@ -6,6 +6,7 @@ use App\Http\Controllers\SkinProfileFormController;
 use App\Http\Controllers\TipsController;
 use App\Http\Controllers\AboutusController;
 
+
 /*
 |----------------------------------------------------------------------
 | Web Routes
@@ -35,3 +36,5 @@ Route::resource('Tips', TipsController::class);
 Route::get('/tips/{id}', [TipsController::class, 'show'])->name('Tips.show');
 Route::resource('Aboutus', AboutusController::class);
 Route::get('/Aboutus', [AboutusController::class, 'index'])->name('Aboutus.index');
+// Route for deleting a notification
+

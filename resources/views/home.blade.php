@@ -109,7 +109,7 @@
 
         <!-- Card 3 -->
         <div class="col">
-            <a href="#" class="card-link"> <!-- Placeholder Link -->
+            <a href="{{ route('face-detection.index') }}" class="card-link"> <!-- Placeholder Link -->
                 <div class="card">
                     <img src="{{ asset('images/Myskin.png') }}" class="card-img-top" alt="My Skin">
                     <div class="card-body">

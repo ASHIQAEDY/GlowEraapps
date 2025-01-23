@@ -5,6 +5,7 @@ use App\Http\Controllers\ProductController; // Make sure to import the ProductCo
 use App\Http\Controllers\SkinProfileFormController;
 use App\Http\Controllers\TipsController;
 use App\Http\Controllers\AboutusController;
+use App\Http\Controllers\FaceDetectionController;
 
 
 /*
@@ -38,3 +39,10 @@ Route::resource('Aboutus', AboutusController::class);
 Route::get('/Aboutus', [AboutusController::class, 'index'])->name('Aboutus.index');
 
 Route::get('/skin-profiles', [SkinProfileFormController::class, 'index'])->name('SkinProfileForm.index');
+
+Route::get('/face-detection', function () {
+    return view('face-detection');
+})->name('face-detection.index');
+
+Route::post('/face-detection', [FaceDetectionController::class, 'detect'])->name('face-detection.detect');
+Route::get('/past-analyses', [FaceDetectionController::class, 'showPastAnalyses'])->name('face-detection.past');

@@ -36,5 +36,5 @@ Route::resource('Tips', TipsController::class);
 Route::get('/tips/{id}', [TipsController::class, 'show'])->name('Tips.show');
 Route::resource('Aboutus', AboutusController::class);
 Route::get('/Aboutus', [AboutusController::class, 'index'])->name('Aboutus.index');
-// Route for deleting a notification
 
+Route::get('/skin-profiles', [SkinProfileFormController::class, 'index'])->name('SkinProfileForm.index');

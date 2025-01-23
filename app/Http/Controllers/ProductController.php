@@ -9,24 +9,42 @@ use App\Notifications\ProductExpiryNotification;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
 {
     $user = auth()->user(); // Get the logged-in user
 
-    if ($user->UserLevel == 0) { 
-        // If the user is an admin (user_level 0), fetch all products ordered by latest with pagination
-        $products = Product::latest()->paginate(3);
+    $query = Product::query();
+
+    if ($user->UserLevel == 0) {
+        // Admin can search by userid, Product Name, Purchased Date, Open Date, Expiry Date
+        if ($request->filled('userid')) {
+            $query->where('userid', $request->userid);
+        }
     } else {
-        // Otherwise, fetch only the latest products of the logged-in user with pagination
-        $products = Product::where('userid', $user->id)->latest()->paginate(3);
+        // Regular user can only see their own products
+        $query->where('userid', $user->id);
     }
 
-    // Return the index view with the products
-    return view('Product.index', compact('products'));
+    if ($request->filled('BrandName')) {
+        $query->where('BrandName', 'like', '%' . $request->BrandName . '%');
+    }
+    if ($request->filled('PurchasedDate')) {
+        $query->whereDate('PurchasedDate', $request->PurchasedDate);
+    }
+    if ($request->filled('OpenDate')) {
+        $query->whereDate('OpenDate', $request->OpenDate);
+    }
+    if ($request->filled('ExpiryDate')) {
+        $query->whereDate('ExpiryDate', $request->ExpiryDate);
+    }
 
-    $notifications = auth()->user()->notifications;
+    $products = $query->latest()->paginate(3);
 
-    return view('Product.index', compact('notifications'));
+    // Fetch notifications for the logged-in user
+    $notifications = $user->notifications;
+
+    // Return the index view with the products and notifications
+    return view('Product.index', compact('products', 'notifications'));
 }
 
 

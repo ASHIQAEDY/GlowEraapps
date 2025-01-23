@@ -1,119 +1,100 @@
 @extends('layouts.app')
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 @section('content')
-<div class="container-fluid" style="background-color:rgb(91, 65, 110); color: white;"> <!-- Purple background and white text -->
-    <!-- Button to go back to Home -->
-    
-
+<div class="container-fluid" style="background-color:rgb(91, 65, 110); color: white;">
     <h1 class="text-center mb-4">SKIN PROFILE ASSESMENTS</h1>
     @if(auth()->user()->UserLevel == 1)
     <h2 class="text-center mb-4"> YOUR MOST RECENT SKIN PROFILE:</h2>
-    
     @endif
     @if(auth()->user()->UserLevel == 0)
-  <h2  class="text-center mb-4">GLOWERA USER SKIN PROFILE:</h2>
-  @endif
+    <h2 class="text-center mb-4">GLOWERA USER SKIN PROFILE:</h2>
+    @endif
+
+    <!-- Search Bar -->
+    <form method="GET" action="{{ route('SkinProfileForm.index') }}" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="search" class="form-control" placeholder="Search by Date, Total Score, Concern Level{{ auth()->user()->UserLevel == 0 ? ', User ID' : '' }}" value="{{ request()->query('search') }}">
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-primary" style="background-color: #6a0dad; border-color: #6a0dad;">
+                    <i class="fas fa-search"></i> Search
+                </button>
+            </div>
+        </div>
+    </form>
+
     <!-- Display Success Message -->
     @if(session('success'))
-        <div class="alert alert-success mb-4">
-            {{ session('success') }}
-        </div>
+    <div class="alert alert-success mb-4">
+        {{ session('success') }}
+    </div>
     @endif
 
     <!-- Displaying existing skin profiles -->
-    @foreach($forms as $profile)
-    <div class="table-responsive mb-4">
-        <table class="table table-bordered table-hover shadow" style="background-color: #f8f9fa; border: 2px solid #6a0dad; border-radius: 15px;"> <!-- Light background with purple border and curved corners -->
-            <thead style="background-color: #6a0dad; color: white;"> <!-- Purple header -->
-                <tr>
-                    <th>Date</th>
-                    <th>Total Score</th>
-                    <th>Concern Level</th>
-                    @if(Auth::user()->UserLevel == 0)
-                        <th>User ID</th>
-                    @endif
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>{{ $profile->created_at->format('d-m-Y') }}</td>
-                    <td>{{ $profile->TotalScore }}</td>
-                    <td>
+    @if($forms->isEmpty())
+    <div class="alert alert-warning text-center">
+        No skin profiles found matching your search criteria.
+    </div>
+    @else
+    <div class="row">
+        @foreach($forms as $profile)
+        <div class="col-md-4 mb-4">
+            <div class="card shadow" style="border: 2px solid #6a0dad; border-radius: 15px;">
+                <div class="card-header" style="background-color: #6a0dad; color: white; border-radius: 15px 15px 0 0;">
+                    <h5 class="card-title mb-0">Skin Profile Assessment</h5>
+                </div>
+                <div class="card-body" style="background-color: #f8f9fa;">
+                    <p class="card-text"><strong>Date:</strong> {{ $profile->created_at->format('d-m-Y') }}</p>
+                    <p class="card-text"><strong>Total Score:</strong> {{ $profile->TotalScore }}</p>
+                    <p class="card-text"><strong>Concern Level:</strong> 
                         @if($profile->InterpretationStatus == 'Excellent Skin Health')
-                            Excellent
+                        Excellent
                         @elseif($profile->InterpretationStatus == 'Good Skin Health')
-                            Good
+                        Good
                         @elseif($profile->InterpretationStatus == 'Moderate Skin Health')
-                            Moderate
+                        Moderate
                         @elseif($profile->InterpretationStatus == 'Poor Skin Health')
-                            Poor
+                        Poor
                         @elseif($profile->InterpretationStatus == 'Very Poor Skin Health')
-                            Very Poor
+                        Very Poor
                         @else
-                            Not Available
+                        Not Available
                         @endif
-                    </td>
+                    </p>
                     @if(Auth::user()->UserLevel == 0)
-                        <td>{{ $profile->user_id }}</td>
+                    <p class="card-text"><strong>User ID:</strong> {{ $profile->user_id }}</p>
                     @endif
-                    <td>
-                        <a href="{{ route('SkinProfileForm.show', $profile->FormID) }}" class="btn btn-info btn-sm m-1" style="background-color: #6a0dad; border-color: #6a0dad;">
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ route('SkinProfileForm.show', $profile->FormID) }}" class="btn btn-info btn-sm fixed-size-btn" style="background-color: #6a0dad; border-color: #6a0dad;">
                             <i class="fas fa-eye"></i> View
                         </a>
                         @if(auth()->user()->UserLevel == 0)
-                        <a href="{{ route('SkinProfileForm.edit', $profile->FormID) }}" class="btn btn-warning btn-sm m-1" style="background-color: #9370DB; border-color: #9370DB;">
+                        <a href="{{ route('SkinProfileForm.edit', $profile->FormID) }}" class="btn btn-warning btn-sm fixed-size-btn" style="background-color: #9370DB; border-color: #9370DB;">
                             <i class="fas fa-pencil-alt"></i> Edit
                         </a>
                         @endif
                         <form action="{{ route('SkinProfileForm.destroy', $profile->FormID) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm m-1" style="background-color: #8B008B; border-color: #8B008B;" onclick="return confirmDelete('{{ $profile->created_at->format('d-m-Y') }}')">
+                            <button type="submit" class="btn btn-danger btn-sm fixed-size-btn" style="background-color: #8B008B; border-color: #8B008B;" onclick="return confirmDelete('{{ $profile->created_at->format('d-m-Y') }}')">
                                 <i class="fas fa-trash-alt"></i> Delete
                             </button>
                         </form>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endforeach
     </div>
-    @endforeach
+    <div class="d-flex justify-content-center">
+        {{ $forms->links() }}
+    </div>
+    @endif
 
     <!-- Score Interpretation Information -->
     <div class="text-center mb-4">
         <h4>Score Interpretation:</h4>
         <p><strong>Based on the total score, the user's skin health is interpreted as follows:</strong></p>
-        <table class="table table-bordered table-hover shadow" style="background-color:rgb(132, 124, 175); border: 2px solid #6a0dad; border-radius: 15px;">
-            <thead style="background-color:rgb(255, 255, 255); color: white;">
-                <tr>
-                    <th>Score Range</th>
-                    <th>Skin Health Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><strong>10-14</strong></td>
-                    <td>Excellent Skin Health</td>
-                </tr>
-                <tr>
-                    <td><strong>15-24</strong></td>
-                    <td>Good Skin Health</td>
-                </tr>
-                <tr>
-                    <td><strong>25-34</strong></td>
-                    <td>Moderate Skin Health</td>
-                </tr>
-                <tr>
-                    <td><strong>35-44</strong></td>
-                    <td>Poor Skin Health</td>
-                </tr>
-                <tr>
-                    <td><strong>45-50</strong></td>
-                    <td>Very Poor Skin Health</td>
-                </tr>
-            </tbody>
-        </table>
+        <canvas id="scoreChart" width="400" height="200"></canvas>
     </div>
 
     <!-- Interactive Information Section -->
@@ -151,31 +132,23 @@
 
 <!-- Responsive Styles -->
 <style>
-    .table {
-        border-collapse: separate;
-        border-spacing: 0 10px; /* Add space between rows */
-        border: 2px solid #6a0dad; /* Add border to table */
-        border-radius: 15px; /* Curved borders for outer table */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow to table */
+    .card {
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
-    .table th, .table td {
-        vertical-align: middle;
-        text-align: center;
-    }
-    .table-hover tbody tr:hover {
-        background-color:rgb(70, 102, 134); /* Light grey on hover */
-    }
-    .table thead th {
-        background-color:rgb(171, 139, 192); /* Purple background for header */
+    .card-header {
+        background-color: #6a0dad;
         color: white;
-        border: none;
+        border-radius: 15px 15px 0 0;
     }
-    .table tbody td {
-        background-color:rgb(171, 139, 192); /* White background for rows */
-        border: none;
+    .card-body {
+        background-color: #f8f9fa;
     }
     .btn {
-        border-radius: 20px; /* Rounded buttons */
+        border-radius: 20px;
+    }
+    .fixed-size-btn {
+        width: 80px; /* Set a fixed width for the buttons */
     }
     .btn-info {
         background-color: #6a0dad;
@@ -190,29 +163,22 @@
         border-color: #8B008B;
     }
     .btn-info:hover, .btn-warning:hover, .btn-danger:hover {
-        opacity: 0.8; /* Slight transparency on hover */
+        opacity: 0.8;
     }
     @media (max-width: 768px) {
-        .table-responsive {
-            padding-left: 10px;
-            padding-right: 10px;
-            overflow-x: auto; /* Make table scrollable horizontally */
+        .card {
+            margin-bottom: 20px;
         }
         .btn {
-            font-size: 14px; /* Adjust button font size for smaller screens */
-        }
-        .table th, .table td {
-            font-size: 12px; /* Adjust table text for smaller screens */
+            font-size: 14px;
         }
     }
-
     @media (max-width: 576px) {
         .container-fluid {
             padding-left: 15px;
-            padding-right: 15
+            padding-right: 15px;
         }
     }
-
     /* Slider Styles */
     .slider {
         position: relative;
@@ -241,7 +207,7 @@
         bottom: 0;
         left: 0;
         right: 0;
-        background-color: rgb(84, 63, 100); /* Indigo color */
+        background-color: rgb(84, 63, 100);
         display: flex;
         justify-content: space-around;
         align-items: center;
@@ -252,7 +218,7 @@
 
     .bottom-navbar a {
         display: flex;
-        flex-direction: column; /* Align icons above text */
+        flex-direction: column;
         justify-content: center;
         align-items: center;
         color: white;
@@ -263,24 +229,26 @@
     }
 
     .bottom-navbar a:hover {
-        color: #FFD700; /* Gold color for hover */
-        transform: scale(1.1); /* Slightly enlarge on hover */
+        color: #FFD700;
+        transform: scale(1.1);
     }
 
     .bottom-navbar i {
-        font-size: 20px; /* Icon size */
-        margin-bottom: 4px; /* Space between icon and text */
+        font-size: 20px;
+        margin-bottom: 4px;
     }
 
     .bottom-navbar span {
-        font-size: 12px; /* Text size below the icons */
+        font-size: 12px;
     }
 
-    /* Make sure the page content doesn't overlap the navbar */
     .container-fluid {
-        padding-bottom: 60px; /* Add padding equal to navbar height */
+        padding-bottom: 60px;
     }
 </style>
+
+<!-- Include Chart.js Library -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
     function confirmDelete(formDate) {
@@ -317,6 +285,56 @@
     document.addEventListener('DOMContentLoaded', () => {
         rotateInfo();
         setInterval(rotateInfo, 5 * 1000); // Change every 5 seconds
+
+        // Chart.js Configuration
+        const ctx = document.getElementById('scoreChart').getContext('2d');
+        const scoreChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Excellent', 'Good', 'Moderate', 'Poor', 'Very Poor'],
+                datasets: [{
+                    label: 'Skin Health Status',
+                    data: [10, 15, 20, 25, 30], // Replace with actual counts for each category
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 0.8)',
+                        'rgba(54, 162, 235, 0.8)',
+                        'rgba(255, 206, 86, 0.8)',
+                        'rgba(255, 99, 132, 0.8)',
+                        'rgba(153, 102, 255, 0.8)'
+                    ],
+                    borderColor: [
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(153, 102, 255, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: 'white' // Set y-axis text color to white
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: 'white' // Set x-axis text color to white
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: 'white' // Set legend text color to white
+                        }
+                    }
+                }
+            }
+        });
     });
 </script>
 @endsection

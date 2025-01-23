@@ -10,22 +10,43 @@ class SkinProfileFormController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $user = auth()->user(); // Get the logged-in user
+    public function index(Request $request)
+{
+    $user = auth()->user(); // Get the logged-in user
+    $search = $request->input('search'); // Get the search input
 
-    if ($user->UserLevel == 0) { 
-        // If the user is an admin (user_level 0), fetch all forms ordered by creation date
-        $forms = SkinProfileForm::orderBy('created_at', 'desc')->get();
+    $query = SkinProfileForm::query();
+
+    if ($user->UserLevel == 0) {
+        // If the user is an admin (user_level 0), fetch all forms
+        $query->orderBy('created_at', 'desc');
     } else {
-        // Otherwise, fetch only the forms of the logged-in user, ordered by creation date
-        $forms = SkinProfileForm::where('user_id', $user->id)
-                                ->orderBy('created_at', 'desc')
-                                ->get();
+        // Otherwise, fetch only the forms of the logged-in user
+        $query->where('user_id', $user->id)
+              ->orderBy('created_at', 'desc');
     }
+
+    if ($search) {
+        $query->where(function ($q) use ($search, $user) {
+            if ($user->UserLevel == 0) {
+                // Admin can search by Date, Total Score, Concern Level, and User ID
+                $q->where('created_at', 'like', '%' . $search . '%')
+                  ->orWhere('TotalScore', 'like', '%' . $search . '%')
+                  ->orWhere('InterpretationStatus', 'like', '%' . $search . '%')
+                  ->orWhere('user_id', 'like', '%' . $search . '%');
+            } else {
+                // Regular user can search by Date, Total Score, and Concern Level
+                $q->where('created_at', 'like', '%' . $search . '%')
+                  ->orWhere('TotalScore', 'like', '%' . $search . '%')
+                  ->orWhere('InterpretationStatus', 'like', '%' . $search . '%');
+            }
+        });
+    }
+
+    $forms = $query->paginate(10); // Paginate the results, 10 per page
 
     return view('SkinProfileForm.index', compact('forms'));
-    }
+}
 
     /**
      * Show the form for creating a new resource.

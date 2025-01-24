@@ -6,7 +6,7 @@ use App\Http\Controllers\SkinProfileFormController;
 use App\Http\Controllers\TipsController;
 use App\Http\Controllers\AboutusController;
 use App\Http\Controllers\FaceDetectionController;
-
+use App\Http\Controllers\UserProfileController;
 
 /*
 |----------------------------------------------------------------------
@@ -40,9 +40,16 @@ Route::get('/Aboutus', [AboutusController::class, 'index'])->name('Aboutus.index
 
 Route::get('/skin-profiles', [SkinProfileFormController::class, 'index'])->name('SkinProfileForm.index');
 
+//forfaceanalysis
 Route::get('/face-detection', function () {
     return view('face-detection');
 })->name('face-detection.index');
 
 Route::post('/face-detection', [FaceDetectionController::class, 'detect'])->name('face-detection.detect');
 Route::get('/past-analyses', [FaceDetectionController::class, 'showPastAnalyses'])->name('face-detection.past');
+Route::delete('/past-analyses/{id}', [FaceDetectionController::class, 'destroy'])->name('past-analyses.destroy');
+//foreditprofile
+
+
+Route::get('/profile/edit', [UserProfileController::class, 'edit'])->name('profile.edit');
+Route::put('/profile/update', [UserProfileController::class, 'update'])->name('profile.update');

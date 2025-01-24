@@ -3,9 +3,10 @@
 <style>
     /* Container Styling */
     .container {
-        background-color: rgb(121, 56, 173); /* Dark purple background for the container */
+        background-color: #6a0dad; /* Dark purple background for the container */
         border-radius: 15px;
         padding: 20px;
+        color: #fff; /* White text color */
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         max-width: 900px; /* Limit the width for better readability */
         margin: auto; /* Center the container */
@@ -42,7 +43,7 @@
 
     /* Tip Card Styling */
     .tip-card {
-        background-color: #6a0dad;
+        background-color:rgba(164, 43, 201, 0.73);
         color: #fff;
         border-radius: 10px;
         padding: 20px;
@@ -81,10 +82,12 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        
         gap: 10px; /* Space between buttons */
     }
     @media (min-width: 576px) {
         .button-group {
+          
             flex-direction: row;
         }
     }
@@ -133,7 +136,7 @@
 @section('content')
 <div class="container">
    
-    <h1>Skin Health Tips</h1>
+    <h1>SKIN HEALTH TIPS</h1>
     <!-- Conditionally show the "Create New Tip" button only if the user has UserLevel = 0 -->
     @if(Auth::user()->UserLevel == 0)
         <div class="button-group mt-3">
@@ -159,7 +162,9 @@
 
                     <div class="button-group">
                         <!-- View Button -->
-                        <a href="{{ route('Tips.show', $tip->id) }}" class="btn btn-primary"><i class="fa fa-eye"></i> View</a>
+                        <a href="{{ route('Tips.show', $tip->id) }}" class="btn btn-primary" style="background-color:rgb(235, 235, 64); color:rgb(0, 0, 0); border-color:rgb(0, 0, 0); padding: 10px 15px; text-align: center;">
+    <i class="fa fa-eye" style="color:rgb(23, 31, 31);"></i> Read 
+</a>
 
                         <!-- Conditionally show the "Edit" button only if the user has UserLevel = 0 -->
                         @if(Auth::user()->UserLevel == 0)

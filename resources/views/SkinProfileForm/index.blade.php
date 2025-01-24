@@ -1,10 +1,10 @@
 @extends('layouts.app')
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 @section('content')
-<div class="container-fluid" style="background-color:rgb(91, 65, 110); color: white;">
-    <h1 class="text-center mb-4">SKIN PROFILE ASSESMENTS</h1>
+<div class="container-fluid" style="background-color:rgb(81, 13, 130); color: white;">
+    <h1 class="text-center mb-4">SKIN PROFILE</h1>
     @if(auth()->user()->UserLevel == 1)
-    <h2 class="text-center mb-4"> YOUR MOST RECENT SKIN PROFILE:</h2>
+    <h2 class="text-center mb-4"> YOUR RECENT SKIN PROFILE:</h2>
     @endif
     @if(auth()->user()->UserLevel == 0)
     <h2 class="text-center mb-4">GLOWERA USER SKIN PROFILE:</h2>
@@ -15,7 +15,7 @@
         <div class="input-group">
             <input type="text" name="search" class="form-control" placeholder="Search by Date, Total Score, Concern Level{{ auth()->user()->UserLevel == 0 ? ', User ID' : '' }}" value="{{ request()->query('search') }}">
             <div class="input-group-append">
-                <button type="submit" class="btn btn-primary" style="background-color: #6a0dad; border-color: #6a0dad;">
+                <button type="submit" class="btn btn-primary" style="background-color:rgb(232, 219, 38); border-color: #6a0dad;">
                     <i class="fas fa-search"></i> Search
                 </button>
             </div>
@@ -38,14 +38,14 @@
     <div class="row">
         @foreach($forms as $profile)
         <div class="col-md-4 mb-4">
-            <div class="card shadow" style="border: 2px solid #6a0dad; border-radius: 15px;">
-                <div class="card-header" style="background-color: #6a0dad; color: white; border-radius: 15px 15px 0 0;">
+            <div class="card shadow" style="border: 2px solidrgb(70, 40, 92); border-radius: 15px;">
+                <div class="card-header" style="background-color:rgb(134, 72, 179); color: white; border-radius: 15px 15px 0 0;">
                     <h5 class="card-title mb-0">Skin Profile Assessment</h5>
                 </div>
-                <div class="card-body" style="background-color: #f8f9fa;">
-                    <p class="card-text"><strong>Date:</strong> {{ $profile->created_at->format('d-m-Y') }}</p>
-                    <p class="card-text"><strong>Total Score:</strong> {{ $profile->TotalScore }}</p>
-                    <p class="card-text"><strong>Concern Level:</strong> 
+                <div class="card-body" style="background-color:rgb(195, 160, 202);">
+                <p class="card-text"><i class="fas fa-calendar-day" style="color: #FF6347;"></i> <strong>Date:</strong> {{ $profile->created_at->format('d-m-Y') }}</p>
+<p class="card-text"><i class="fas fa-star" style="color: #FFD700;"></i> <strong>Total Score:</strong> {{ $profile->TotalScore }}</p>
+<p class="card-text"><i class="fas fa-heart" style="color: #FF1493;"></i> <strong>Concern Level:</strong> {{ $profile->ConcernLevel }}</p>
                         @if($profile->InterpretationStatus == 'Excellent Skin Health')
                         Excellent
                         @elseif($profile->InterpretationStatus == 'Good Skin Health')
@@ -61,23 +61,29 @@
                         @endif
                     </p>
                     @if(Auth::user()->UserLevel == 0)
-                    <p class="card-text"><strong>User ID:</strong> {{ $profile->user_id }}</p>
+                    <p class="card-text"><strong><i class="fas fa-user"></i> User ID:</strong> {{ $profile->user_id }}</p>
+
                     @endif
                     <div class="d-flex justify-content-between">
-                        <a href="{{ route('SkinProfileForm.show', $profile->FormID) }}" class="btn btn-info btn-sm fixed-size-btn" style="background-color: #6a0dad; border-color: #6a0dad;">
-                            <i class="fas fa-eye"></i> View
-                        </a>
+                    <a href="{{ route('SkinProfileForm.show', $profile->FormID) }}" 
+   class="btn btn-info btn-sm" 
+   style="background-color: rgb(87, 221, 219); border-color: #6a0dad; padding: 5px 10px; font-size: 12px; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center;">
+   <i class="fas fa-eye" style="color: white;"></i>
+</a>
                         @if(auth()->user()->UserLevel == 0)
-                        <a href="{{ route('SkinProfileForm.edit', $profile->FormID) }}" class="btn btn-warning btn-sm fixed-size-btn" style="background-color: #9370DB; border-color: #9370DB;">
-                            <i class="fas fa-pencil-alt"></i> Edit
+                        <a href="{{ route('SkinProfileForm.edit', $profile->FormID) }}" class="btn btn-warning btn-sm fixed-size-btn" style="background-color:rgb(198, 185, 42); border-color: #9370DB;">
+                            <i class="fas fa-pencil-alt"></i> 
                         </a>
                         @endif
                         <form action="{{ route('SkinProfileForm.destroy', $profile->FormID) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm fixed-size-btn" style="background-color: #8B008B; border-color: #8B008B;" onclick="return confirmDelete('{{ $profile->created_at->format('d-m-Y') }}')">
-                                <i class="fas fa-trash-alt"></i> Delete
-                            </button>
+                            <button type="submit" 
+        class="btn btn-danger btn-sm" 
+        style="background-color: rgb(231, 3, 7); border-color: #8B008B; padding: 5px 10px; font-size: 12px; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center;" 
+        onclick="return confirmDelete('{{ $profile->created_at->format('d-m-Y') }}')">
+    <i class="fas fa-trash-alt"></i>
+</button>
                         </form>
                     </div>
                 </div>
@@ -108,8 +114,8 @@
     </div>
 
     <div class="text-center mt-4">
-        <a href="{{ route('SkinProfileForm.create') }}" class="btn btn-primary btn-lg" style="background-color: #6a0dad; border-color: #6a0dad; border-radius: 10px;">
-            <i class="fa fa-arrow-left mr-2"></i> Back to Skin Assessment
+        <a href="{{ route('SkinProfileForm.create') }}" class="btn btn-primary btn-lg" style="background-color:rgb(179, 94, 184); border-color: #6a0dad; border-radius: 10px;">
+            <i class="fa fa-arrow-left mr-2"></i> Skin Assessment
         </a>
     </div>
 </div>
@@ -132,23 +138,24 @@
 
 <!-- Responsive Styles -->
 <style>
+    
     .card {
         border-radius: 15px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 8px rgba(13, 13, 13, 0.1);
     }
     .card-header {
-        background-color: #6a0dad;
+        background-color:rgb(81, 13, 130); 
         color: white;
         border-radius: 15px 15px 0 0;
     }
     .card-body {
-        background-color: #f8f9fa;
+        background-color:rgb(142, 64, 161);
     }
     .btn {
         border-radius: 20px;
     }
     .fixed-size-btn {
-        width: 80px; /* Set a fixed width for the buttons */
+        width: 85px; /* Set a fixed width for the buttons */
     }
     .btn-info {
         background-color: #6a0dad;
@@ -161,6 +168,7 @@
     .btn-danger {
         background-color: #8B008B;
         border-color: #8B008B;
+        
     }
     .btn-info:hover, .btn-warning:hover, .btn-danger:hover {
         opacity: 0.8;
@@ -185,9 +193,9 @@
         width: 100%;
         height: 50px;
         overflow: hidden;
-        border: 1px solid #6a0dad;
+        border: 1px solidrgb(11, 11, 11);
         border-radius: 10px;
-        background-color: #f8f9fa;
+        background-color:rgb(183, 189, 136);
     }
     .slides {
         display: flex;
@@ -198,7 +206,7 @@
         box-sizing: border-box;
         padding: 11px;
         text-align: center;
-        color: #6a0dad;
+        color:rgb(255, 255, 255);
     }
 
     /* General Bottom Navbar Styles */

@@ -10,12 +10,12 @@
         max-width: 600px; /* Limit the width for better readability */
         margin: auto; /* Center the container */
     }
-    .btn-secondary, .btn-primary, .btn-success {
+    .btn-secondary, .btn-primary, .btn-success, .btn-danger {
         background-color: #4b0082; /* Dark purple button color */
         border: none;
         color: #fff; /* White text color */
     }
-    .btn-secondary:hover, .btn-primary:hover, .btn-success:hover {
+    .btn-secondary:hover, .btn-primary:hover, .btn-success:hover, .btn-danger:hover {
         background-color: #2e0854; /* Darker purple on hover */
     }
     .form-group label {
@@ -73,8 +73,7 @@
         color: #fff; /* White text color */
     }
     input[type="date"]::-webkit-calendar-picker-indicator {
-        filter: invert(1); /* Invert colors for better
-           visibility */
+        filter: invert(1); /* Invert colors for better visibility */
     }
     /* Centering buttons */
     .button-group {
@@ -186,23 +185,68 @@
     .container {
         padding-bottom: 100px; /* Adjusted padding to the bottom */
     }
+    /* Table Styling */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 15px;
+        font-size: 14px; /* Smaller font size */
+    }
+    table, th, td {
+        border: 1px solid #dcdcdc;
+    }
+    th, td {
+        padding: 5px; /* Reduced padding */
+        text-align: left;
+    }
+    th {
+        background-color: #4b0082;
+        color: #fff;
+    }
 </style>
 
 @section('content')
 <div class="container">
     <h1>Past Face Detection Analyses</h1>
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
     @if(isset($pastAnalyses) && count($pastAnalyses) > 0)
         @foreach($pastAnalyses as $pastAnalysis)
             <div class="face-result">
                 <h2>Past Analysis</h2>
-                <p><strong>Date:</strong> {{ $pastAnalysis->created_at->format('d M Y, H:i') }}</p>
-                @foreach($pastAnalysis->analysis as $key => $value)
-                    @if(is_array($value))
-                        <p><strong>{{ ucfirst(str_replace('_', ' ', $key)) }}:</strong> {{ implode(', ', $value) }}</p>
-                    @else
-                        <p><strong>{{ ucfirst(str_replace('_', ' ', $key)) }}:</strong> {{ $value }}</p>
-                    @endif
-                @endforeach
+                <section>
+                    <p><strong>Date:</strong> {{ $pastAnalysis->created_at->format('d M Y') }}</p>
+                </section>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Attribute</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($pastAnalysis->analysis as $key => $value)
+                            <tr>
+                                <td>{{ ucfirst(str_replace('_', ' ', $key)) }}</td>
+                                <td>
+                                    @if(is_array($value))
+                                        {{ implode(', ', $value) }}
+                                    @else
+                                        {{ $value }}
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                <form action="{{ route('past-analyses.destroy', $pastAnalysis->id) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
             </div>
         @endforeach
         <div class="pagination">
@@ -211,12 +255,6 @@
     @else
         <p>No past analyses found.</p>
     @endif
-</div>
-
-<!-- Pop-up message -->
-<div class="popup" id="popup">
-    <button class="close-btn" onclick="closePopup()">&times;</button>
-    <p>Here are your past face detection analyses.</p>
 </div>
 
 <script>
@@ -252,5 +290,11 @@
         <i class="fas fa-lightbulb"></i>
         <span>Tips</span>
     </a>
+</div>
+
+<!-- Pop-up Message -->
+<div id="popup" class="popup">
+    <button class="close-btn" onclick="closePopup()">&times;</button>
+    <p>Welcome to the Face Detection Analysis page!</p>
 </div>
 @endsection

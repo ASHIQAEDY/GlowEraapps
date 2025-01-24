@@ -188,7 +188,7 @@
     @if(isset($result['faces']) && count($result['faces']) > 0)
         <div class="face-result">
             <h2>Current Analysis</h2>
-            <img src="{{ asset('path/to/your/image.jpg') }}" alt="Detected Face">
+         
             <p><strong>Gender:</strong> {{ $analysis['gender'] }}</p>
             <p><strong>Face Age:</strong> {{ $analysis['age'] }}</p>
             <p><strong>Smile:</strong> {{ $analysis['smile'] }}</p>
@@ -212,34 +212,12 @@
     @else
         <p>No faces detected.</p>
     @endif
-
-    <h2>Past Analyses</h2>
-    @if(isset($pastAnalyses) && count($pastAnalyses) > 0)
-        @foreach($pastAnalyses as $pastAnalysis)
-            <div class="face-result">
-                <h2>Past Analysis</h2>
-                <p><strong>Date:</strong> {{ $pastAnalysis->created_at->format('d M Y, H:i') }}</p>
-                @foreach($pastAnalysis->analysis as $key => $value)
-                    @if(is_array($value))
-                        <p><strong>{{ ucfirst(str_replace('_', ' ', $key)) }}:</strong> {{ implode(', ', $value) }}</p>
-                    @else
-                        <p><strong>{{ ucfirst(str_replace('_', ' ', $key)) }}:</strong> {{ $value }}</p>
-                    @endif
-                @endforeach
-            </div>
-        @endforeach
-        <div class="pagination">
-            {{ $pastAnalyses->links() }}
-        </div>
-    @else
-        <p>No past analyses found.</p>
-    @endif
 </div>
 
 <!-- Pop-up message -->
 <div class="popup" id="popup">
     <button class="close-btn" onclick="closePopup()">&times;</button>
-    <p>Face detection completed! Check the analysis below.</p>
+    <p>Face detection completed! ............</p>
 </div>
 
 <script>
@@ -250,8 +228,7 @@
         }, 1000); // Show after 1 second
     };
 
-    // Close the pop-up message
-    function closePopup() {
+    // Close the pop-up message function closePopup() {
         var popup = document.getElementById('popup');
         popup.classList.remove('show');
         popup.classList.add('slide-out');

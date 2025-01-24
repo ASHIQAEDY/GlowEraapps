@@ -4,14 +4,15 @@
 <style>
     /* General Styles */
     body {
-        background-color: #4b0082; /* Dark purple background for the entire page */
-        color: #fff; /* White text color */
+        background-color: #6a0dad; /* Dark purple background for the entire page */
+     
         font-family: Arial, sans-serif;
     }
 
     .container {
-        background-color: #6a0dad; /* Slightly lighter purple for the container */
+        background-color: #6a0dad;/* Slightly lighter purple for the container */
         border-radius: 15px;
+  
         padding: 20px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         max-width: 100%; /* Full width for better readability on mobile */
@@ -20,7 +21,7 @@
     }
 
     .btn-secondary, .btn-primary, .btn-success {
-        background-color: #8a2be2; /* Bright purple button color */
+        background-color: #6a0dad; /* Bright purple button color */
         border: none;
         color: #fff; /* White text color */
     }
@@ -38,7 +39,7 @@
         border: 1px solid #dcdcdc;
         margin-bottom: 15px; /* Add space between form controls */
         background-color: #8a2be2; /* Bright purple background for form controls */
-        color: #fff; /* White text color */
+      
     }
 
     .form-control::placeholder {
@@ -58,12 +59,13 @@
     /* Card Styling */
     .card {
         background-color: #9370db; /* Medium purple background for the card */
-        border-radius: 10px;
+        border-radius: 15px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
     .card-body {
         padding: 15px;
+      
     }
 
     .card-title, .card-text {
@@ -196,14 +198,17 @@
     .container {
         padding-bottom: 120px; /* Adjusted padding to the bottom */
     }
+    h1.mb-4 {
+    color: #fff; /* White text color */
+    }
+    
+}
+    
 </style>
 
 @section('content')
 <div class="container">
-    <!-- Navigation Back to Home -->
-    <a href="{{ route('home') }}" class="btn btn-secondary mb-3">
-        <i class="fa fa-home"></i> Back to Home
-    </a>
+   
 
     <h1 class="mb-4">Product</h1>
 
@@ -301,20 +306,24 @@
 
                             <!-- Actions: Edit & Delete -->
                             <div class="button-group">
-                                <!-- Edit Button -->
-                                <a href="{{ route('Product.edit', $product->ProductID) }}" class="btn btn-primary btn-sm">
-                                    <i class="fas fa-edit"></i> Edit
-                                </a>
+    <!-- Edit Button -->
+    <a href="{{ route('Product.edit', $product->ProductID) }}" 
+       class="btn btn-primary btn-sm" 
+       style="background-color: rgb(87, 221, 219); border-color: #6a0dad; padding: 8px; font-size: 16px; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; border-radius: 50%;">
+        <i class="fas fa-edit" style="color: white;"></i>
+    </a>
 
-                                <!-- Delete Button -->
-                                <form action="{{ route('Product.destroy', $product->ProductID) }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this product?')">
-                                        <i class="fas fa-trash-alt"></i> Delete
-                                    </button>
-                                </form>
-                            </div>
+    <!-- Delete Button -->
+    <form action="{{ route('Product.destroy', $product->ProductID) }}" method="POST" style="display:inline;">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="btn btn-danger btn-sm" 
+                style="background-color: rgb(231, 3, 7); border-color: #6a0dad; padding: 8px; font-size: 16px; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; border-radius: 50%;" 
+                onclick="return confirm('Are you sure you want to delete this product?')">
+            <i class="fas fa-trash-alt" style="color: white;"></i>
+        </button>
+    </form>
+</div>
                         </div>
                     </div>
                 </div>

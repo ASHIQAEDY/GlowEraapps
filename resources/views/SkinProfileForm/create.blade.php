@@ -6,7 +6,7 @@
 <!-- Add custom styles to match home page background -->
 <style>
     body {
-        background-color:rgb(91, 65, 110) !important; /* Indigo - same as home */
+        background-color:rgb(81, 13, 130);  !important; /* Indigo - same as home */
         color: white;
     }
 
@@ -29,7 +29,7 @@
     .btn-outline-primary:hover, 
     .btn-outline-primary:focus {
         background-color: rgb(206, 154, 243) !important; /* Ensure active button stays white */
-        color: rgb(91, 65, 110) !important; /* Contrast text color for active buttons */
+        color: rgb(162, 139, 179) !important; /* Contrast text color for active buttons */
     }
     .btn-group-toggle .btn {
         border-radius: 4px;
@@ -114,16 +114,16 @@
             </button>
 
             <button type="reset" class="btn btn-warning mb-2 mb-md-0 text-nowrap" style="background-color: #FFD700; border-color: #FFD700;">
-                <i class="fa fa-undo mr-2"></i> Reset Form
+                <i class="fa fa-undo mr-2"></i> Reset 
             </button>
             @if(auth()->user()->UserLevel == 1)
-            <a href="{{ route('SkinProfileForm.index') }}" class="btn btn-primary text-nowrap" style="background-color: #6a0dad; border-color: #6a0dad;">
-                <i class="fa fa-eye mr-2"></i> View Recent Skin Profile
+            <a href="{{ route('SkinProfileForm.index') }}" class="btn btn-primary text-nowrap" style="background-color: rgb(179, 94, 184); border-color: #6a0dad;">
+                <i class="fa fa-eye mr-2"></i>   Skin Profile Log
             </a>
             @endif
             @if(auth()->user()->UserLevel == 0)
-            <a href="{{ route('SkinProfileForm.index') }}" class="btn btn-primary text-nowrap" style="background-color: #6a0dad; border-color: #6a0dad;">
-                <i class="fa fa-eye mr-2"></i> View Recent Forms
+            <a href="{{ route('SkinProfileForm.index') }}" class="btn btn-primary text-nowrap" style="background-color: rgb(179, 94, 184); border-color: #6a0dad;">
+                <i class="fa fa-eye mr-2"></i> Skin Profile Log
             </a>
             @endif
         </div>

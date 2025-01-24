@@ -71,7 +71,7 @@
         font-family: 'Arial', sans-serif; /* Formal font */
     }
     .container {
-        background-color: #4b0082; /* Deep purple background for the container */
+        background-color: #6a0dad; /* Deep purple background for the container */
         border-radius: 15px;
         padding: 20px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

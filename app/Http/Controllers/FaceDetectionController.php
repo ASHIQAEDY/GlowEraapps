@@ -15,7 +15,7 @@ class FaceDetectionController extends Controller
     {
         $this->facePPService = $facePPService;
     }
-
+    
     public function detect(Request $request)
     {
         $request->validate([
@@ -42,7 +42,7 @@ class FaceDetectionController extends Controller
     public function showPastAnalyses()
     {
         // Retrieve past analyses with pagination
-        $pastAnalyses = FaceAnalysis::where('user_id', Auth::id())->paginate(5);
+        $pastAnalyses = FaceAnalysis::where('user_id', Auth::id())->paginate(1);
 
         return view('past-analyses', ['pastAnalyses' => $pastAnalyses]);
     }
@@ -108,7 +108,13 @@ class FaceDetectionController extends Controller
 
         return $analysis;
     }
-
+    public function destroy($id)
+    {
+        $analysis = FaceAnalysis::findOrFail($id);
+        $analysis->delete();
+    
+        return redirect()->route('past-analyses')->with('success', 'Analysis deleted successfully.');
+    }
     private function detectAcne($attributes)
     {
         // Implement acne detection logic based on attributes
@@ -156,4 +162,6 @@ class FaceDetectionController extends Controller
         // Implement firmness detection logic based on attributes
         return 'Good skin firmness';
     }
+
+    
 }

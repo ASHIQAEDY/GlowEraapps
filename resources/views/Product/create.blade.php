@@ -2,7 +2,7 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 <style>
     .container {
-        background-color: rgb(121, 56, 173); /* Dark purple background for the container */
+        background-color: #6a0dad; /* Dark purple background for the container */
         border-radius: 15px;
         padding: 20px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -159,20 +159,37 @@
     .container {
         padding-bottom: 80px; /* Adjusted padding to the bottom */
     }
+
+    /* Global text color to white */
+body, .container, .form-control, .form-group label, .popup p, .bottom-navbar span {
+    color: #fff !important;
+}
+
+/* Ensure that all placeholder text inside form controls is also white */
+.form-control::placeholder {
+    color: #fff !important;
+}
+
+/* Set white color for links */
+a {
+    color: #fff !important;
+}
+
+a:hover {
+    color: #FFD700 !important; /* Optional: Change hover color */
+}
 </style>
 
 @section('content')
 <div class="container">
-    <a href="{{ route('home') }}" class="btn btn-secondary p-2 mb-3">
-        <i class="fa fa-home"></i> Back to Home
-    </a>
+   
 
     <h1>Add your Product :</h1>
     <form action="{{ route('Product.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         <div class="form-group">
-            <label for="BrandName">Brand Name</label>
+            <label for="BrandName">Product Name</label>
             <input type="text" name="BrandName" class="form-control" value="{{ old('BrandName') }}" required>
             @error('BrandName')
                 <span class="text-danger">{{ $message }}</span>
@@ -204,18 +221,22 @@
         </div>
 
         <div class="form-group">
-            <label for="image">Upload Product Image (Optional)</label>
-            <input type="file" name="image" class="form-control">
-            @error('image')
-                <span class="text-danger">{{ $message }}</span>
-            @enderror
-        </div>
+    <label for="image">
+        <i class="fas fa-image"></i> Upload Product Image (Required)
+    </label>
+    <div class="custom-file">
+        <input type="file" name="image" class="form-control" required>
+    </div>
+    @error('image')
+        <span class="text-danger">{{ $message }}</span>
+    @enderror
+</div>
        
 
         <div class="button-group mt-3">
             <button type="submit" class="btn btn-success" style="background-color:rgb(176, 156, 194);">Add Product</button>
             <a href="{{ route('Product.index') }}" class="btn btn-primary text-nowrap" style="width: auto; background-color:rgb(232, 63, 238);">
-                <i class="fa fa-eye mr-2"></i> View added Products
+                <i class="fa fa-eye mr-2"  ></i> List of Products
             </a>
         </div>
     </form>
@@ -226,7 +247,7 @@
 <div class="popup" id="popup">
     <button class="close-btn" onclick="closePopup()">&times;</button>
     <p>Welcome!</p><p> Create your new product, fill in the details and click "Add Product".</p>
-      <p>   You can also view your recent forms by clicking "View added Products".</p>
+      <p>   You can also view your recent forms by clicking "List of Products".</p>
 </div>
 
 <script>

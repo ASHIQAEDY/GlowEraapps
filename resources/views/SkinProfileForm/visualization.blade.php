@@ -11,7 +11,7 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background-color:rgb(84, 63, 100); /* Indigo color */
+            background-color:rgb(84, 63, 100);  /* Indigo color */
             padding: 10px 0;
             display: flex;
             justify-content: space-around;
@@ -50,7 +50,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            background-color: #800080; /* Purple background */
+            background-color:#6a0dad; /* Purple background */
             color: white; /* White text for better contrast */
         }
         h1 {

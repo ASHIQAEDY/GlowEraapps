@@ -164,7 +164,7 @@
 
 @section('content')
 <div class="container">
-    <h1>Face Detection</h1>
+    <h1>SKIN ANALYSIS</h1>
     <form action="{{ route('face-detection.detect') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="form-group">
@@ -172,8 +172,8 @@
             <input type="file" name="image" class="form-control" required>
         </div>
         <div class="button-group">
-            <button type="submit" class="btn btn-primary">Detect Face</button>
-            <a href="{{ route('face-detection.past') }}" class="btn btn-secondary">See Past Analyses</a>
+            <button type="submit" class="btn btn-primary">Upload</button>
+            <a href="{{ route('face-detection.past') }}" class="btn btn-secondary">Past Analyses</a>
         </div>
     </form>
 </div>
@@ -181,7 +181,7 @@
 <!-- Pop-up message -->
 <div class="popup" id="popup">
     <button class="close-btn" onclick="closePopup()">&times;</button>
-    <p>Welcome! Upload an image to detect face attributes.</p>
+    <p>Welcome! Upload an image for your skin analysis.</p>
 </div>
 
 <script>

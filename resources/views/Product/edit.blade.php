@@ -2,6 +2,10 @@
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 <style>
+    body {
+        color: #fff; /* Default text color for the entire page */
+    }
+
     .container {
         background-color: rgb(121, 56, 173); /* Dark purple background for the container */
         border-radius: 15px;
@@ -10,17 +14,21 @@
         max-width: 600px; /* Limit the width for better readability */
         margin: auto; /* Center the container */
     }
+
     .btn-secondary, .btn-primary, .btn-success, .btn-warning, .btn-danger {
         background-color: #4b0082; /* Dark purple button color */
         border: none;
         color: #fff; /* White text color */
     }
+
     .btn-secondary:hover, .btn-primary:hover, .btn-success:hover, .btn-warning:hover, .btn-danger:hover {
         background-color: #2e0854; /* Darker purple on hover */
     }
+
     .form-group label {
         font-weight: bold;
     }
+
     .form-control {
         border-radius: 10px;
         border: 1px solid #dcdcdc;
@@ -28,16 +36,25 @@
         background-color: #4b0082; /* Dark purple background for form controls */
         color: #fff; /* White text color */
     }
+
     .form-control::placeholder {
         color: #dcdcdc; /* Light grey placeholder text */
     }
+
+    /* Override text color for BrandName input field */
+    .form-control[name="BrandName"] {
+        color: #000; /* Black text color for BrandName input */
+    }
+
     .btn {
         border-radius: 10px;
     }
+
     h1 {
         text-align: center; /* Center the heading */
         margin-bottom: 30px; /* Add space below the heading */
     }
+
     /* Calendar Styling */
     input[type="date"] {
         position: relative;
@@ -47,9 +64,11 @@
         background-color: rgb(156, 110, 189); /* Dark purple background */
         color: #fff; /* White text color */
     }
+
     input[type="date"]::-webkit-calendar-picker-indicator {
         filter: invert(1); /* Invert colors for better visibility */
     }
+
     /* Centering buttons */
     .button-group {
         display: flex;
@@ -57,11 +76,13 @@
         align-items: center;
         gap: 10px; /* Space between buttons */
     }
+
     @media (min-width: 576px) {
         .button-group {
             flex-direction: row;
         }
     }
+
     /* Pop-up message styling */
     .popup {
         position: fixed;
@@ -77,9 +98,11 @@
         z-index: 1000;
         animation: slideIn 0.5s forwards; /* Add animation */
     }
+
     .popup.show {
         bottom: 20px;
     }
+
     .popup .close-btn {
         background: none;
         border: none;
@@ -90,6 +113,7 @@
         top: 5px;
         right: 10px;
     }
+
     /* Define the slide-in animation */
     @keyframes slideIn {
         from {
@@ -101,6 +125,7 @@
             opacity: 1;
         }
     }
+
     /* Define the slide-out animation */
     @keyframes slideOut {
         from {
@@ -112,9 +137,11 @@
             opacity: 0;
         }
     }
+
     .popup.slide-out {
         animation: slideOut 0.5s forwards;
     }
+
     /* General Bottom Navbar Styles */
     .bottom-navbar {
         position: fixed;

@@ -241,19 +241,53 @@ public function destroy(SkinProfileForm $SkinProfileForm)
     return redirect()->route('SkinProfileForm.index')->with('success', "Skin assessment profile from {$deletedDate} deleted successfully!");
 }
 
+
 public function visualization()
 {
     $user_id = auth()->id(); // Get the logged-in user's ID
     $profiles = SkinProfileForm::where('user_id', $user_id)->get();
-    return view('SkinProfileForm.visualization', compact('profiles'));
-    
+    $availableDates = SkinProfileForm::where('user_id', $user_id)
+                                     ->selectRaw('DATE(created_at) as date')
+                                     ->distinct()
+                                     ->pluck('date');
+    return view('SkinProfileForm.visualization', compact('profiles', 'availableDates'));
 }
-public function fetchDataByDate(Request $request)
-{$user_id = auth()->id(); // Get the logged-in user's ID
-    $selectedDate = $request->input('date');
+
+public function fetchDataByDateRange(Request $request)
+{
+    $user_id = auth()->id(); // Get the logged-in user's ID
+    $startDate = $request->input('startDate');
+    $endDate = $request->input('endDate');
+
+    // Log the received dates
+    \Log::info('Start Date: ' . $startDate);
+    \Log::info('End Date: ' . $endDate);
+
+    // Validate date inputs
+    if (!$startDate || !$endDate) {
+        return response()->json(['message' => 'Start date and end date are required.'], 400);
+    }
+
+    // Ensure the dates are in the correct format
+    $startDate = date('Y-m-d', strtotime($startDate));
+    $endDate = date('Y-m-d', strtotime($endDate));
+
+    // Fetch profiles within the date range
     $profiles = SkinProfileForm::where('user_id', $user_id)
-                               ->whereDate('created_at', $selectedDate)
+                               ->whereBetween('created_at', [$startDate, $endDate])
+                               ->orderBy('created_at', 'asc') // Ensure the data is ordered by date
                                ->get();
+
+    // Check if profiles are found
+    if ($profiles->isEmpty()) {
+        return response()->json(['message' => 'No data found for the selected date range.'], 404);
+    }
+
+    // Calculate total score for each profile
+    $profiles->each(function ($profile) {
+        $profile->total_score = $profile->Acne + $profile->FineLine + $profile->Darkspots + $profile->Redness + $profile->Dryness + $profile->Oily + $profile->PoresRate + $profile->Irritation + $profile->Firmness + $profile->Darkcircles;
+    });
+
     return response()->json($profiles);
 }
 

@@ -2,99 +2,73 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
 <style>
-    /* General Styles */
-    body {
-        background-color: #6a0dad; /* Dark purple background for the entire page */
-     
+    body, .container {
+        background-color: #6a0dad;
         font-family: Arial, sans-serif;
+        color: #fff;
     }
 
     .container {
-        background-color: #6a0dad;/* Slightly lighter purple for the container */
         border-radius: 15px;
-  
         padding: 20px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        max-width: 100%; /* Full width for better readability on mobile */
-        margin: auto; /* Center the container */
-        padding-bottom: 120px; /* Increased padding to the bottom */
+        max-width: 100%;
+        margin: auto;
+        padding-bottom: 120px;
     }
 
-    .btn-secondary, .btn-primary, .btn-success {
-        background-color: #6a0dad; /* Bright purple button color */
+    .btn, .form-control {
+        border-radius: 10px;
         border: none;
-        color: #fff; /* White text color */
+        color: #fff;
+        background-color: #6a0dad;
     }
 
-    .btn-secondary:hover, .btn-primary:hover, .btn-success:hover {
-        background-color: #5d3fd3; /* Darker purple on hover */
-    }
-
-    .form-group label {
-        font-weight: bold;
+    .btn:hover {
+        background-color: #5d3fd3;
     }
 
     .form-control {
-        border-radius: 10px;
-        border: 1px solid #dcdcdc;
-        margin-bottom: 15px; /* Add space between form controls */
-        background-color: #8a2be2; /* Bright purple background for form controls */
-      
-    }
-
-    .form-control::placeholder {
-        color: #dcdcdc; /* Light grey placeholder text */
-    }
-
-    .btn {
-        border-radius: 10px;
+        margin-bottom: 15px;
+        background-color: #8a2be2;
     }
 
     h1 {
-        text-align: center; /* Center the heading */
-        margin-bottom: 30px; /* Add space below the heading */
-        color: #fff; /* White text color */
+        text-align: center;
+        margin-bottom: 30px;
     }
 
-    /* Card Styling */
     .card {
-        background-color: #9370db; /* Medium purple background for the card */
+        background-color: #9370db;
         border-radius: 15px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
     .card-body {
         padding: 15px;
-      
+        color: #000;
     }
 
-    .card-title, .card-text {
-        color: rgb(0, 0, 0); /* Black text color for card content */
-    }
-
-    /* Image Styling */
     .card img {
         border-radius: 10px;
-        max-width: 100%; /* Ensure image fits within the card */
+        max-width: 100%;
     }
 
-    /* Centering buttons */
     .button-group {
         display: flex;
-        justify-content: center; /* Center the buttons */
-        gap: 10px; /* Space between buttons */
+        justify-content: center;
+        gap: 10px;
     }
 
-    /* List View */
     .list-view .product-item {
         display: flex;
-        flex-direction: column; /* Display products vertically */
+        flex-direction: column;
         align-items: center;
     }
 
     .list-view .product-item .card {
         display: flex;
-        flex-direction: column; /* Display card content vertically */
+        flex-direction: column;
         align-items: center;
         width: 100%;
     }
@@ -102,35 +76,19 @@
     .list-view .product-item .card img {
         width: 100px;
         height: 100px;
-        margin-bottom: 15px; /* Space below image */
+        margin-bottom: 15px;
     }
 
-    .list-view .product-item .card-body {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .alert.alert-info {
-        background-color: #d8bfd8; /* Light purple background */
-        border-color: #dda0dd; /* Purple border */
-        color: #4b0082; /* Dark purple text */
+    .alert-info {
+        background-color: #d8bfd8;
+        border-color: #dda0dd;
+        color: #4b0082;
     }
 
     .list-group-item {
-        background-color: #dda0dd; /* Light purple background for list items */
-        border-color: #ba68c8; /* Purple border for list items */
-        color: #4b0082; /* Dark purple text for list items */
-    }
-
-    .btn.btn-primary {
-        background-color: #8e24aa; /* Purple button background */
-        border-color: #6a1b9a; /* Purple button border */
-    }
-
-    .btn.btn-primary:hover {
-        background-color: #6a1b9a; /* Darker purple on hover */
-        border-color: #4a148c; /* Darker purple border on hover */
+        background-color: #dda0dd;
+        border-color: #ba68c8;
+        color: #4b0082;
     }
 
     .popup-message {
@@ -153,13 +111,12 @@
         transform: translateY(0);
     }
 
-    /* General Bottom Navbar Styles */
     .bottom-navbar {
         position: fixed;
         bottom: 0;
         left: 0;
         right: 0;
-        background-color: #6a0dad; /* Indigo color */
+        background-color:rgb(84, 63, 100);
         display: flex;
         justify-content: space-around;
         align-items: center;
@@ -170,7 +127,7 @@
 
     .bottom-navbar a {
         display: flex;
-        flex-direction: column; /* Align icons above text */
+        flex-direction: column;
         justify-content: center;
         align-items: center;
         color: white;
@@ -181,35 +138,26 @@
     }
 
     .bottom-navbar a:hover {
-        color: #FFD700; /* Gold color for hover */
-        transform: scale(1.1); /* Slightly enlarge on hover */
+        color: #FFD700;
+        transform: scale(1.1);
     }
 
     .bottom-navbar i {
-        font-size: 20px; /* Icon size */
-        margin-bottom: 4px; /* Space between icon and text */
+        font-size: 20px;
+        margin-bottom: 4px;
     }
 
     .bottom-navbar span {
-        font-size: 12px; /* Text size below the icons */
+        font-size: 12px;
     }
 
-    /* Make sure the page content doesn't overlap the navbar */
     .container {
-        padding-bottom: 120px; /* Adjusted padding to the bottom */
+        padding-bottom: 40px;
     }
-    h1.mb-4 {
-    color: #fff; /* White text color */
-    }
-    
-}
-    
 </style>
 
 @section('content')
 <div class="container">
-   
-
     <h1 class="mb-4">Product</h1>
 
     @if(session('status'))
@@ -223,24 +171,24 @@
         <div class="row">
             @if(Auth::user()->UserLevel == 0)
                 <div class="col-md-3">
-                <p class="card-text"><strong>user id:</strong></p>
+                    <p class="card-text"><strong>User ID:</strong></p>
                     <input type="text" name="userid" class="form-control" placeholder="User ID" value="{{ request('userid') }}">
                 </div>
             @endif
             <div class="col-md-3">
-            <p class="card-text"><strong>Product Name:</strong></p>
+                <p class="card-text"><strong>Product Name:</strong></p>
                 <input type="text" name="BrandName" class="form-control" placeholder="Product Name" value="{{ request('BrandName') }}">
             </div>
             <div class="col-md-3">
-            <p class="card-text"><strong>Purchased Date:</strong></p>
+                <p class="card-text"><strong>Purchased Date:</strong></p>
                 <input type="date" name="PurchasedDate" class="form-control" placeholder="Purchased Date" value="{{ request('PurchasedDate') }}">
             </div>
             <div class="col-md-3">
-            <p class="card-text"><strong>Open Date:</strong></p>
+                <p class="card-text"><strong>Open Date:</strong></p>
                 <input type="date" name="OpenDate" class="form-control" placeholder="Open Date" value="{{ request('OpenDate') }}">
             </div>
             <div class="col-md-3">
-            <p class="card-text"><strong>Expiry Date:</strong></p>
+                <p class="card-text"><strong>Expiry Date:</strong></p>
                 <input type="date" name="ExpiryDate" class="form-control" placeholder="Expiry Date" value="{{ request('ExpiryDate') }}">
             </div>
             <div class="col-md-3">
@@ -306,24 +254,24 @@
 
                             <!-- Actions: Edit & Delete -->
                             <div class="button-group">
-    <!-- Edit Button -->
-    <a href="{{ route('Product.edit', $product->ProductID) }}" 
-       class="btn btn-primary btn-sm" 
-       style="background-color: rgb(87, 221, 219); border-color: #6a0dad; padding: 8px; font-size: 16px; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; border-radius: 50%;">
-        <i class="fas fa-edit" style="color: white;"></i>
-    </a>
+                                <!-- Edit Button -->
+                                <a href="{{ route('Product.edit', $product->ProductID) }}" 
+                                   class="btn btn-primary btn-sm" 
+                                   style="background-color: rgb(87, 221, 219); border-color: #6a0dad;        padding: 8px; font-size: 16px; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; border-radius: 50%;">
+                                    <i class="fas fa-edit" style="color: white;"></i>
+                                </a>
 
-    <!-- Delete Button -->
-    <form action="{{ route('Product.destroy', $product->ProductID) }}" method="POST" style="display:inline;">
-        @csrf
-        @method('DELETE')
-        <button type="submit" class="btn btn-danger btn-sm" 
-                style="background-color: rgb(231, 3, 7); border-color: #6a0dad; padding: 8px; font-size: 16px; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; border-radius: 50%;" 
-                onclick="return confirm('Are you sure you want to delete this product?')">
-            <i class="fas fa-trash-alt" style="color: white;"></i>
-        </button>
-    </form>
-</div>
+                                <!-- Delete Button -->
+                                <form action="{{ route('Product.destroy', $product->ProductID) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm" 
+                                            style="background-color: rgb(231, 3, 7); border-color: #6a0dad; padding: 8px; font-size: 16px; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; border-radius: 50%;" 
+                                            onclick="return confirm('Are you sure you want to delete this product?')">
+                                        <i class="fas fa-trash-alt" style="color: white;"></i>
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -399,52 +347,3 @@
         <span>Tips</span>
     </a>
 </div>
-
-<style>
-/* General Bottom Navbar Styles */
-/* General Bottom Navbar Styles */
-.bottom-navbar {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background-color: rgb(84, 63, 100); /* Indigo color */
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        padding: 10px 0;
-        box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.2);
-        z-index: 1000;
-    }
-
-    .bottom-navbar a {
-        display: flex;
-        flex-direction: column; /* Align icons above text */
-        justify-content: center;
-        align-items: center;
-        color: white;
-        text-decoration: none;
-        font-size: 14px;
-        padding: 5px;
-        transition: color 0.3s ease, transform 0.3s ease;
-    }
-
-    .bottom-navbar a:hover {
-        color: #FFD700; /* Gold color for hover */
-        transform: scale(1.1); /* Slightly enlarge on hover */
-    }
-
-    .bottom-navbar i {
-        font-size: 20px; /* Icon size */
-        margin-bottom: 4px; /* Space between icon and text */
-    }
-
-    .bottom-navbar span {
-        font-size: 12px; /* Text size below the icons */
-    }
-
-/* Make sure the page content doesn't overlap the navbar */
-.container {
-    padding-bottom: 40px; /* Adjusted padding to the bottom */
-}
-</style>

@@ -47,9 +47,14 @@ Route::get('/face-detection', function () {
 
 Route::post('/face-detection', [FaceDetectionController::class, 'detect'])->name('face-detection.detect');
 Route::get('/past-analyses', [FaceDetectionController::class, 'showPastAnalyses'])->name('face-detection.past');
+Route::get('/past-analyses', [FaceDetectionController::class, 'showPastAnalyses'])->name('past-analyses');
 Route::delete('/past-analyses/{id}', [FaceDetectionController::class, 'destroy'])->name('past-analyses.destroy');
+Route::get('/face-detection/past', [FaceDetectionController::class, 'showPastAnalyses'])->name('face-detection.past');
 //foreditprofile
 
 
 Route::get('/profile/edit', [UserProfileController::class, 'edit'])->name('profile.edit');
 Route::put('/profile/update', [UserProfileController::class, 'update'])->name('profile.update');
+
+Route::get('/visualization', [SkinProfileFormController::class, 'visualization'])->name('SkinProfileForm.visualization');
+Route::post('/fetchDataByDateRange', [SkinProfileFormController::class, 'fetchDataByDateRange'])->name('SkinProfileForm.fetchDataByDateRange');

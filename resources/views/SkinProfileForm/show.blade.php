@@ -107,7 +107,7 @@
     @if(auth()->user()->UserLevel == 0)
     <div class="mb-4">
         <a href="{{ route('SkinProfileForm.edit', $profile->FormID) }}" class="btn btn-warning">
-            <i class="fa fa-edit mr-2"></i> Edit User skin Profile
+            <i class="fa fa-edit mr-2"></i> Edit User Message
         </a>
         @endif
         @if(auth()->user()->UserLevel == 1)

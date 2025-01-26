@@ -2,105 +2,90 @@
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 <style>
+    body, .container {
+        background-color: #6a0dad;
+        font-family: Arial, sans-serif;
+        color: #fff;
+    }
+
     .container {
-        background-color: rgb(121, 56, 173); /* Dark purple background for the container */
         border-radius: 15px;
         padding: 20px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        max-width: 600px; /* Limit the width for better readability */
-        margin: auto; /* Center the container */
+        max-width: 100%;
+        margin: auto;
+        padding-bottom: 120px;
     }
-    .btn-secondary, .btn-primary, .btn-success {
-        background-color: #4b0082; /* Dark purple button color */
+
+    .btn, .form-control {
+        border-radius: 10px;
         border: none;
-        color: #fff; /* White text color */
+        color: #fff;
+        background-color: #6a0dad;
     }
-    .btn-secondary:hover, .btn-primary:hover, .btn-success:hover {
-        background-color: #2e0854; /* Darker purple on hover */
+
+    .btn:hover {
+        background-color: #5d3fd3;
     }
-    .form-group label {
-        font-weight: bold;
-    }
+
     .form-control {
-        border-radius: 10px;
-        border: 1px solid #dcdcdc;
-        margin-bottom: 15px; /* Add space between form controls */
-        background-color: #4b0082; /* Dark purple background for form controls */
-        color: #fff; /* White text color */
+        margin-bottom: 15px;
+        background-color: #8a2be2;
     }
-    .form-control::placeholder {
-        color: #dcdcdc; /* Light grey placeholder text */
-    }
-    .btn {
-        border-radius: 10px;
-    }
+
     h1 {
-        text-align: center; /* Center the heading */
-        margin-bottom: 30px; /* Add space below the heading */
+        text-align: center;
+        margin-bottom: 30px;
     }
+
     .face-result {
         background-color: #fff;
         border-radius: 10px;
-        padding: 15px; /* Reduced padding */
+        padding: 15px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         margin-bottom: 20px;
+        color: #000;
     }
+
     .face-result h2 {
         text-align: center;
-        margin-bottom: 15px; /* Reduced margin */
+        margin-bottom: 15px;
     }
+
     .face-result p {
-        margin-bottom: 8px; /* Reduced margin */
+        margin-bottom: 8px;
     }
+
     .face-result img {
         display: block;
-        margin: 0 auto 15px; /* Reduced margin */
-        max-width: 100%; /* Ensure the image is responsive */
-        border-radius: 10px; /* Optional: Add rounded corners to the image */
-    }
-    /* Calendar Styling */
-    input[type="date"] {
-        position: relative;
-        padding: 10px;
+        margin: 0 auto 15px;
+        max-width: 100%;
         border-radius: 10px;
-        border: 1px solid rgb(148, 64, 64);
-        background-color: rgb(156, 110, 189); /* Dark purple background */
-        color: #fff; /* White text color */
     }
-    input[type="date"]::-webkit-calendar-picker-indicator {
-        filter: invert(1); /* Invert colors for better visibility */
-    }
-    /* Centering buttons */
-    .button-group {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 10px; /* Space between buttons */
-    }
-    @media (min-width: 576px) {
-        .button-group {
-            flex-direction: row;
-        }
-    }
-    /* Pop-up message styling */
-    .popup {
+
+    .popup-message {
         position: fixed;
-        bottom: -100px;
+        top: 50%;
         left: 50%;
-        transform: translateX(-50%);
+        transform: translate(-50%, -50%);
         background-color: #4b0082;
-        color: #fff;
+        color: white;
         padding: 15px;
         border-radius: 10px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        transition: bottom 0.5s;
+        opacity: 0;
+        transition: opacity 0.5s, transform 0.5s;
         z-index: 1000;
-        animation: slideIn 0.5s forwards; /* Add animation */
+        max-width: 90%;
+        width: auto;
     }
-    .popup.show {
-        bottom: 20px;
+
+    .popup-message.show {
+        opacity: 1;
+        transform: translate(-50%, -50%);
     }
-    .popup .close-btn {
+
+    .popup-message .close-btn {
         background: none;
         border: none;
         color: #fff;
@@ -110,38 +95,23 @@
         top: 5px;
         right: 10px;
     }
-    /* Define the slide-in animation */
-    @keyframes slideIn {
-        from {
-            bottom: -100px;
-            opacity: 0;
+
+    @media (max-width: 576px) {
+        .popup-message {
+            padding: 10px;
         }
-        to {
-            bottom: 20px;
-            opacity: 1;
-        }
-    }
-    /* Define the slide-out animation */
-    @keyframes slideOut {
-        from {
-            bottom: 20px;
-            opacity: 1;
-        }
-        to {
-            bottom: -100px;
-            opacity: 0;
+
+        .popup-message .close-btn {
+            font-size: 16px;
         }
     }
-    .popup.slide-out {
-        animation: slideOut 0.5s forwards;
-    }
-    /* General Bottom Navbar Styles */
+
     .bottom-navbar {
         position: fixed;
         bottom: 0;
         left: 0;
         right: 0;
-        background-color: rgb(84, 63, 100); /* Indigo color */
+        background-color: rgb(84, 63, 100);
         display: flex;
         justify-content: space-around;
         align-items: center;
@@ -152,7 +122,7 @@
 
     .bottom-navbar a {
         display: flex;
-        flex-direction: column; /* Align icons above text */
+        flex-direction: column;
         justify-content: center;
         align-items: center;
         color: white;
@@ -163,22 +133,21 @@
     }
 
     .bottom-navbar a:hover {
-        color: #FFD700; /* Gold color for hover */
-        transform: scale(1.1); /* Slightly enlarge on hover */
+        color: #FFD700;
+        transform: scale(1.1);
     }
 
     .bottom-navbar i {
-        font-size: 20px; /* Icon size */
-        margin-bottom: 4px; /* Space between icon and text */
+        font-size: 20px;
+        margin-bottom: 4px;
     }
 
     .bottom-navbar span {
-        font-size: 12px; /* Text size below the icons */
+        font-size: 12px;
     }
 
-    /* Make sure the page content doesn't overlap the navbar */
     .container {
-        padding-bottom: 100px; /* Adjusted padding to the bottom */
+        padding-bottom: 40px;
     }
 </style>
 
@@ -188,7 +157,6 @@
     @if(isset($result['faces']) && count($result['faces']) > 0)
         <div class="face-result">
             <h2>Current Analysis</h2>
-         
             <p><strong>Gender:</strong> {{ $analysis['gender'] }}</p>
             <p><strong>Face Age:</strong> {{ $analysis['age'] }}</p>
             <p><strong>Smile:</strong> {{ $analysis['smile'] }}</p>
@@ -212,12 +180,23 @@
     @else
         <p>No faces detected.</p>
     @endif
+
+    <div class="button-group mt-3">
+        <a href="{{ route('face-detection.index') }}" class="btn btn-primary">Back to Face Analysis</a>
+        @if(isset($analysis['id']))
+            <form action="{{ route('face-detection.destroy', $analysis['id']) }}" method="POST" style="display:inline;">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this analysis?')">Delete Analysis</button>
+            </form>
+        @endif
+    </div>
 </div>
 
 <!-- Pop-up message -->
-<div class="popup" id="popup">
+<div class="popup-message" id="popup">
     <button class="close-btn" onclick="closePopup()">&times;</button>
-    <p>Face detection completed! ............</p>
+    <p>Face detection completed!</p>
 </div>
 
 <script>
@@ -228,7 +207,8 @@
         }, 1000); // Show after 1 second
     };
 
-    // Close the pop-up message function closePopup() {
+    // Close the pop-up message
+    function closePopup() {
         var popup = document.getElementById('popup');
         popup.classList.remove('show');
         popup.classList.add('slide-out');

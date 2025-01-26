@@ -1,7 +1,7 @@
 @extends('layouts.app')
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 @section('content')
-<div class="container-fluid" style="background-color:rgb(81, 13, 130); color: white;">
+<div class="container-fluid">
     <h1 class="text-center mb-4">SKIN PROFILE</h1>
     @if(auth()->user()->UserLevel == 1)
     <h2 class="text-center mb-4"> YOUR RECENT SKIN PROFILE:</h2>
@@ -15,7 +15,7 @@
         <div class="input-group">
             <input type="text" name="search" class="form-control" placeholder="Search by Date, Total Score, Concern Level{{ auth()->user()->UserLevel == 0 ? ', User ID' : '' }}" value="{{ request()->query('search') }}">
             <div class="input-group-append">
-                <button type="submit" class="btn btn-primary" style="background-color:rgb(232, 219, 38); border-color: #6a0dad;">
+                <button type="submit" class="btn btn-primary">
                     <i class="fas fa-search"></i> Search
                 </button>
             </div>
@@ -38,14 +38,15 @@
     <div class="row">
         @foreach($forms as $profile)
         <div class="col-md-4 mb-4">
-            <div class="card shadow" style="border: 2px solidrgb(70, 40, 92); border-radius: 15px;">
-                <div class="card-header" style="background-color:rgb(134, 72, 179); color: white; border-radius: 15px 15px 0 0;">
+            <div class="card shadow">
+                <div class="card-header">
                     <h5 class="card-title mb-0">Skin Profile Assessment</h5>
                 </div>
-                <div class="card-body" style="background-color:rgb(195, 160, 202);">
-                <p class="card-text"><i class="fas fa-calendar-day" style="color: #FF6347;"></i> <strong>Date:</strong> {{ $profile->created_at->format('d-m-Y') }}</p>
-<p class="card-text"><i class="fas fa-star" style="color: #FFD700;"></i> <strong>Total Score:</strong> {{ $profile->TotalScore }}</p>
-<p class="card-text"><i class="fas fa-heart" style="color: #FF1493;"></i> <strong>Concern Level:</strong> {{ $profile->ConcernLevel }}</p>
+                <div class="card-body">
+                    <p class="card-text"><i class="fas fa-calendar-day"></i> <strong>Date:</strong> {{ $profile->created_at->format('d-m-Y') }}</p>
+                    <p class="card-text"><i class="fas fa-star"></i> <strong>Total Score:</strong> {{ $profile->TotalScore }}</p>
+                    <p class="card-text"><i class="fas fa-heart"></i> <strong>Concern Level:</strong> {{ $profile->ConcernLevel }}</p>
+                    <p class="card-text">
                         @if($profile->InterpretationStatus == 'Excellent Skin Health')
                         Excellent
                         @elseif($profile->InterpretationStatus == 'Good Skin Health')
@@ -62,28 +63,22 @@
                     </p>
                     @if(Auth::user()->UserLevel == 0)
                     <p class="card-text"><strong><i class="fas fa-user"></i> User ID:</strong> {{ $profile->user_id }}</p>
-
                     @endif
                     <div class="d-flex justify-content-between">
-                    <a href="{{ route('SkinProfileForm.show', $profile->FormID) }}" 
-   class="btn btn-info btn-sm" 
-   style="background-color: rgb(87, 221, 219); border-color: #6a0dad; padding: 5px 10px; font-size: 12px; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center;">
-   <i class="fas fa-eye" style="color: white;"></i>
-</a>
+                        <a href="{{ route('SkinProfileForm.show', $profile->FormID) }}" class="btn btn-info btn-sm fixed-size-btn">
+                            <i class="fas fa-eye"></i>
+                        </a>
                         @if(auth()->user()->UserLevel == 0)
-                        <a href="{{ route('SkinProfileForm.edit', $profile->FormID) }}" class="btn btn-warning btn-sm fixed-size-btn" style="background-color:rgb(198, 185, 42); border-color: #9370DB;">
-                            <i class="fas fa-pencil-alt"></i> 
+                        <a href="{{ route('SkinProfileForm.edit', $profile->FormID) }}" class="btn btn-warning btn-sm fixed-size-btn">
+                            <i class="fas fa-pencil-alt"></i>
                         </a>
                         @endif
                         <form action="{{ route('SkinProfileForm.destroy', $profile->FormID) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" 
-        class="btn btn-danger btn-sm" 
-        style="background-color: rgb(231, 3, 7); border-color: #8B008B; padding: 5px 10px; font-size: 12px; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center;" 
-        onclick="return confirmDelete('{{ $profile->created_at->format('d-m-Y') }}')">
-    <i class="fas fa-trash-alt"></i>
-</button>
+                            <button type="submit" class="btn btn-danger btn-sm fixed-size-btn" onclick="return confirmDelete('{{ $profile->created_at->format('d-m-Y') }}')">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
                         </form>
                     </div>
                 </div>
@@ -114,7 +109,7 @@
     </div>
 
     <div class="text-center mt-4">
-        <a href="{{ route('SkinProfileForm.create') }}" class="btn btn-primary btn-lg" style="background-color:rgb(179, 94, 184); border-color: #6a0dad; border-radius: 10px;">
+        <a href="{{ route('SkinProfileForm.create') }}" class="btn btn-primary btn-lg">
             <i class="fa fa-arrow-left mr-2"></i> Skin Assessment
         </a>
     </div>
@@ -136,39 +131,55 @@
     </a>
 </div>
 
-<!-- Responsive Styles -->
+<!-- Styles -->
 <style>
-    
+    body, .container {
+        background-color: #6a0dad;
+        font-family: Arial, sans-serif;
+        color: #fff;
+    }
+    .container-fluid {
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: 100%;
+        margin: auto;
+        padding-bottom: 120px;
+    }
     .card {
         border-radius: 15px;
         box-shadow: 0 4px 8px rgba(13, 13, 13, 0.1);
     }
     .card-header {
-        background-color:rgb(81, 13, 130); 
+        background-color: rgb(134, 72, 179);
         color: white;
-        border-radius: 15px 15px 0 0;
+        border-radius: 1px 1px 0 0;
     }
     .card-body {
-        background-color:rgb(142, 64, 161);
+        background-color: rgb(195, 160, 202);
+        border-radius: 1px 1px 0 0;
     }
     .btn {
-        border-radius: 20px;
+        border-radius: 30px;
     }
     .fixed-size-btn {
-        width: 85px; /* Set a fixed width for the buttons */
+        width: 50px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
     .btn-info {
-        background-color: #6a0dad;
-        border-color: #6a0dad;
+        background-color: rgb(87, 221, 219);
+        border-color: rgb(0, 0, 0);
     }
     .btn-warning {
-        background-color: #9370DB;
-        border-color: #9370DB;
+        background-color: rgb(198, 185, 42);
+        border-color: rgb(5, 5, 5);
     }
     .btn-danger {
-        background-color: #8B008B;
-        border-color: #8B008B;
-        
+        background-color: rgb(231, 3, 7);
+        border-color: rgb(2, 2, 2);
     }
     .btn-info:hover, .btn-warning:hover, .btn-danger:hover {
         opacity: 0.8;
@@ -187,15 +198,14 @@
             padding-right: 15px;
         }
     }
-    /* Slider Styles */
     .slider {
         position: relative;
         width: 100%;
         height: 50px;
         overflow: hidden;
-        border: 1px solidrgb(11, 11, 11);
+        border: 1px solid rgb(11, 11, 11);
         border-radius: 10px;
-        background-color:rgb(183, 189, 136);
+        background-color: rgb(183, 189, 136);
     }
     .slides {
         display: flex;
@@ -206,10 +216,8 @@
         box-sizing: border-box;
         padding: 11px;
         text-align: center;
-        color:rgb(255, 255, 255);
+        color: rgb(255, 255, 255);
     }
-
-    /* General Bottom Navbar Styles */
     .bottom-navbar {
         position: fixed;
         bottom: 0;
@@ -223,7 +231,6 @@
         box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.2);
         z-index: 1000;
     }
-
     .bottom-navbar a {
         display: flex;
         flex-direction: column;
@@ -235,23 +242,16 @@
         padding: 5px;
         transition: color 0.3s ease, transform 0.3s ease;
     }
-
     .bottom-navbar a:hover {
         color: #FFD700;
         transform: scale(1.1);
     }
-
     .bottom-navbar i {
         font-size: 20px;
         margin-bottom: 4px;
     }
-
     .bottom-navbar span {
         font-size: 12px;
-    }
-
-    .container-fluid {
-        padding-bottom: 60px;
     }
 </style>
 
@@ -299,7 +299,7 @@
         const scoreChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ['Excellent', 'Good', 'Moderate', 'Poor', 'Very Poor'],
+                labels: ['Very Poor', 'Poor', 'Moderate', 'Good', 'Excellent'],
                 datasets: [{
                     label: 'Skin Health Status',
                     data: [10, 15, 20, 25, 30], // Replace with actual counts for each category

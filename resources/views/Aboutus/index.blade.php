@@ -5,9 +5,9 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 @section('content')
 <div class="container py-5">
-    
     <div class="card shadow-lg border-0">
         <div class="card-header text-white text-center">
             <h2>About Us</h2>
@@ -17,37 +17,27 @@
                 <div class="carousel-inner">
                     <div class="carousel-item active">
                         <h3>Introduction</h3>
-                        <p>{{ $aboutUs->introduction ?? 'No introduction available.' }}</p>
+                        <p>{!! nl2br(e($aboutUs->introduction ?? 'No introduction available.')) !!}</p>
                     </div>
                     <div class="carousel-item">
                         <h3>Services</h3>
-                        <p>{{ $aboutUs->services ?? 'No services available.' }}</p>
+                        <p>{!! nl2br(e($aboutUs->services ?? 'No services available.')) !!}</p>
                     </div>
                     <div class="carousel-item">
                         <h3>Team Background</h3>
-                        <p>{{ $aboutUs->team_background ?? 'No team background available.' }}</p>
+                        <p>{!! nl2br(e($aboutUs->team_background ?? 'No team background available.')) !!}</p>
                     </div>
                     <div class="carousel-item">
                         <h3>Impact</h3>
-                        <p>{{ $aboutUs->impact ?? 'No impact information available.' }}</p>
+                        <p>{!! nl2br(e($aboutUs->impact ?? 'No impact information available.')) !!}</p>
                     </div>
                     <div class="carousel-item">
                         <h3>Contact</h3>
-                        <p>{{ $aboutUs->contact ?? 'No contact information available.' }}</p>
-                    </div>
-                    <div class="carousel-item">
-                        <h3>Visual</h3>
-                        <p>
-                            @if($aboutUs->visual)
-                                <img src="{{ asset('storage/' . $aboutUs->visual) }}" alt="Visual" class="img-fluid">
-                            @else
-                                No visual available.
-                            @endif
-                        </p>
+                        <p>{!! nl2br(e($aboutUs->contact ?? 'No contact information available.')) !!}</p>
                     </div>
                     <div class="carousel-item">
                         <h3>Version</h3>
-                        <p>{{ $aboutUs->version ?? 'No version information available.' }}</p>
+                        <p>{!! nl2br(e($aboutUs->version ?? 'No version information available.')) !!}</p>
                     </div>
                 </div>
                 <a class="carousel-control-prev" href="#aboutUsCarousel" role="button" data-slide="prev">
@@ -64,8 +54,8 @@
             @if($user && $user->UserLevel == 0)
             <div class="mt-4 text-center">
                 <!-- Pass the Aboutus model instance or its ID -->
-                <a href="{{ route('Aboutus.edit', $aboutUs->id) }}" class="btn btn-primary">Edit About Us</a>
-                <a href="{{ route('Aboutus.create') }}" class="btn btn-success ml-2">Create New About Us</a>
+                <a href="{{ route('Aboutus.edit', $aboutUs->id) }}" class="btn btn-primary">Edit </a>
+                
             </div>
             @endif
         </div>
@@ -91,21 +81,34 @@
 <!-- Include the CSS and JavaScript -->
 <style>
     body {
-        background-color:rgb(184, 146, 212); /* Dark purple background */
+        background-color: rgb(253, 253, 253); /* Dark purple background */
         color: white; /* White text for better contrast */
         font-family: 'Arial', sans-serif; /* Formal font */
     }
 
+    .container {
+        background-color: rgb(98, 5, 164); /* Dark purple background for the container */
+        color: white; /* White text color */
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: 900px; /* Limit the width for better readability */
+        margin: auto; /* Center the container */
+        padding-bottom: 100px; /* Ensure space for the navbar */
+    }
+
     .card {
-        background-color:rgb(195, 183, 204); /* Slightly lighter purple for the card */
+        background-color: rgb(109, 24, 135); /* Dark purple background for the card */
+        color: white; /* White text color */
     }
 
     .card-header {
-        background-color:rgb(165, 85, 223); /* Dark purple for the header */
+        background-color: rgb(67, 27, 107); /* Slightly lighter purple for the header */
+        color: white; /* White text color */
     }
 
     .btn-primary {
-        background-color:rgb(137, 68, 139); /* Bright purple for buttons */
+        background-color: rgb(196, 196, 37); /* Bright purple for buttons */
         border-color: #8a2be2;
     }
 

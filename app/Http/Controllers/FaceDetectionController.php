@@ -21,28 +21,28 @@ class FaceDetectionController extends Controller
         $request->validate([
             'image' => 'required|image'
         ]);
-
+    
         $imagePath = $request->file('image')->path();
         $result = $this->facePPService->detectFace($imagePath);
-
+    
         $analysis = $this->analyzeSkin($result);
-
+    
         // Save the analysis to the database
         FaceAnalysis::create([
             'user_id' => Auth::id(),
             'analysis' => $analysis,
         ]);
-
+    
         // Retrieve past analyses with pagination
         $pastAnalyses = FaceAnalysis::where('user_id', Auth::id())->paginate(5);
-
+    
         return view('face-detection-result', ['result' => $result, 'analysis' => $analysis, 'pastAnalyses' => $pastAnalyses]);
     }
 
     public function showPastAnalyses()
     {
         // Retrieve past analyses with pagination
-        $pastAnalyses = FaceAnalysis::where('user_id', Auth::id())->paginate(1);
+        $pastAnalyses = FaceAnalysis::where('user_id', Auth::id())->paginate(5);
 
         return view('past-analyses', ['pastAnalyses' => $pastAnalyses]);
     }

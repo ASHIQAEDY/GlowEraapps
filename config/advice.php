@@ -3,7 +3,7 @@
 return array (
   'Excellent Skin Health' => 
   array (
-    0 => 'Keep up the good work! Maintain your current skincare routine.',
+    0 => 'Keep up the good work! Maintain your current skincare routine',
     1 => 'Continue using sunscreen daily to protect your skin.',
     2 => 'Stay hydrated and eat a balanced diet to maintain your skin health.',
   ),
@@ -29,6 +29,6 @@ return array (
   array (
     0 => 'Seek professional advice from a dermatologist.',
     1 => 'Avoid using any harsh or abrasive skincare products.',
-    2 => 'Focus on gentle cleansing and moisturizing.',
+    2 => 'Focus on gentle cleansing and moisturizing',
   ),
 );

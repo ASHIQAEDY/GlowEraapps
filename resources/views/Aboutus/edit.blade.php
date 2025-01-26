@@ -36,16 +36,7 @@
                     <textarea name="contact" id="contact" class="form-control" rows="5">{{ $aboutUs->contact }}</textarea>
                 </div>
 
-                <div class="form-group">
-                    <label for="visual">Visual (Upload Image)</label>
-                    <!-- Image file upload input -->
-                    <input type="file" name="visual" id="visual" class="form-control">
-                    @if($aboutUs->visual)
-                        <div class="mt-2">
-                            <img src="{{ asset('storage/' . $aboutUs->visual) }}" alt="Visual Image" class="img-fluid" style="max-width: 200px;">
-                        </div>
-                    @endif
-                </div>
+                
 
                 <div class="form-group">
                     <label for="version">Version</label>

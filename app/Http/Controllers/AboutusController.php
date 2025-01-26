@@ -87,9 +87,12 @@ class AboutusController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Aboutus $aboutus)
+    public function show($id)
     {
-        //
+        $aboutUs = AboutUs::find($id);
+        $user = Auth::user(); // Get the authenticated user
+    
+        return view('aboutus.show', compact('aboutUs', 'user'));
     }
 
     /**

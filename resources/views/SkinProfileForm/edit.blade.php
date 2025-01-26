@@ -4,30 +4,30 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
 @section('content')
-<div class="container-fluid text-center" style="background-color:rgb(91, 65, 110); color: white;"> <!-- Purple background and white text -->
-     <!-- Button to go back to Home -->
-     
-   
+<div class="container-fluid text-center"> <!-- Purple background and white text -->
     @if(auth()->user()->UserLevel == 1)
     <h1>Edit your Profile</h1>
     @endif
     @if(auth()->user()->UserLevel == 0)
-  <h1>Edit User Profile</h1>
-  @endif
-  <!-- Guiding Information for Rating Scale -->
-<div class="mb-4">
-    <p><strong>Guidance for Rating Severity:</strong> 
-        <span><strong>1:</strong> No Concern</span> | 
-        <span><strong>2:</strong> Mild Concern</span> | 
-        <span><strong>3:</strong> Moderate Concern</span> | 
-        <span><strong>4:</strong> High Concern</span> | 
-        <span><strong>5:</strong> Very High Concern</span>
-    </p>
-</div>
+    <h1>Edit User Profile</h1>
+    @endif
+    @if(auth()->user()->UserLevel == 1)
+    <!-- Guiding Information for Rating Scale -->
+    <div class="mb-4">
+        <p><strong>Guidance for Rating Severity:</strong> 
+            <span><strong>1:</strong> No Concern</span> | 
+            <span><strong>2:</strong> Mild Concern</span> | 
+            <span><strong>3:</strong> Moderate Concern</span> | 
+            <span><strong>4:</strong> High Concern</span> | 
+            <span><strong>5:</strong> Very High Concern</span>
+        </p>
+    </div>
+    @endif
     <form action="{{ route('SkinProfileForm.update', $profile->FormID) }}" method="POST">
         @csrf
         @method('PUT')
 
+        @if(auth()->user()->UserLevel == 1)
         <!-- List of attributes for the skin profile -->
         @php
             $attributes = [
@@ -67,32 +67,42 @@
                 </div>
             </div>
         @endforeach
+        @endif
+
         @if(auth()->user()->UserLevel == 0)
         <!-- Advice Messages -->
         <h3>Advice Messages</h3>
-        @foreach (config('advice') as $level => $messages)
-            <h4>{{ $level }}</h4>
-            @foreach ($messages as $index => $message)
-                <div class="form-group">
-                    <label for="advice[{{ $level }}][{{ $index }}]">Message {{ $index + 1 }}</label>
-                    <input type="text" name="advice[{{ $level }}][{{ $index }}]" class="form-control" value="{{ $message }}" maxlength="100">
-                </div>
+        <table class="table table-bordered shadow">
+            @foreach (config('advice') as $level => $messages)
+                <thead>
+                    <tr>
+                        <th colspan="2">{{ $level }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($messages as $index => $message)
+                        <tr>
+                            <td>Message {{ $index + 1 }}</td>
+                            <td>
+                                <input type="text" name="advice[{{ $level }}][{{ $index }}]" class="form-control" value="{{ $message }}" maxlength="100">
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
             @endforeach
-        @endforeach
+        </table>
         @endif
 
         <!-- Update button  -->
-        <button type="submit" class="btn btn-success mt-3" style="background-color: #9370DB; border-color: #9370DB;">
+        <button type="submit" class="btn btn-success mt-3">
             <i class="fa fa-save mr-2"></i> Update
         </button>
 
-       <!-- Cancel button  -->
-       <a href="{{ route('SkinProfileForm.index') }}" class="btn btn-danger mt-3" style="background-color: #8B008B; border-color: #8B008B;">
-           <i class="fa fa-times-circle mr-2"></i> Cancel
-       </a>
-
+        <!-- Cancel button  -->
+        <a href="{{ route('SkinProfileForm.index') }}" class="btn btn-danger mt-3">
+            <i class="fa fa-times-circle mr-2"></i> Cancel
+        </a>
     </form>
-    
 </div>
 
 <!-- Bottom Navbar -->
@@ -111,8 +121,13 @@
     </a>
 </div>
 
-<!-- Responsive Styles -->
+<!-- Styles -->
 <style>
+    .container-fluid {
+        background-color: rgb(91, 65, 110);
+        color: white;
+        padding-bottom: 60px;
+    }
     .form-group {
         margin-bottom: 1.5rem;
     }
@@ -120,7 +135,21 @@
         margin-bottom: 0.5rem;
     }
     .form-control {
-        max-width: 100%; /* Ensure the input fields are not too wide */
+        max-width: 100%;
+    }
+    .btn {
+        border-radius: 20px;
+    }
+    .btn-success {
+        background-color: #9370DB;
+        border-color: #9370DB;
+    }
+    .btn-danger {
+        background-color: #8B008B;
+        border-color: #8B008B;
+    }
+    .btn-success:hover, .btn-danger:hover {
+        opacity: 0.8;
     }
     @media (max-width: 576px) {
         .form-group label {
@@ -136,14 +165,12 @@
             font-size: 14px;
         }
     }
-
-    /* General Bottom Navbar Styles */
     .bottom-navbar {
         position: fixed;
         bottom: 0;
         left: 0;
         right: 0;
-        background-color: rgb(84, 63, 100); /* Indigo color */
+        background-color: rgb(84, 63, 100);
         display: flex;
         justify-content: space-around;
         align-items: center;
@@ -151,10 +178,9 @@
         box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.2);
         z-index: 1000;
     }
-
     .bottom-navbar a {
         display: flex;
-        flex-direction: column; /* Align icons above text */
+        flex-direction: column;
         justify-content: center;
         align-items: center;
         color: white;
@@ -163,24 +189,26 @@
         padding: 5px;
         transition: color 0.3s ease, transform 0.3s ease;
     }
-
     .bottom-navbar a:hover {
-        color: #FFD700; /* Gold color for hover */
-        transform: scale(1.1); /* Slightly enlarge on hover */
+        color: #FFD700;
+        transform: scale(1.1);
     }
-
     .bottom-navbar i {
-        font-size: 20px; /* Icon size */
-        margin-bottom: 4px; /* Space between icon and text */
+        font-size: 20px;
+        margin-bottom: 4px;
     }
-
     .bottom-navbar span {
-        font-size: 12px; /* Text size below the icons */
+        font-size: 12px;
     }
-
-    /* Make sure the page content doesn't overlap the navbar */
-    .container-fluid {
-        padding-bottom: 60px; /* Add padding equal to navbar height */
+    .table {
+        background-color: white;
+        color: black;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .table th {
+        background-color: #9370DB;
+        color: white;
     }
 </style>
 @endsection

@@ -5,13 +5,24 @@
 
 <style>
     body {
-        background-color: #4B0082 !important; /* Indigo - #4B0082 */
-        color: white; /* Optional: Change text color to white for better readability */
+        background-color: rgb(98, 5, 164) !important; /* Indigo */
+        color: white; /* Change text color to white for better readability */
+    }
+
+    .container {
+        background-color: rgb(98, 5, 164); /* Indigo background for the container */
+        color: white; /* White text color */
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: 900px; /* Limit the width for better readability */
+        margin: auto; /* Center the container */
+        padding-bottom: 100px; /* Ensure space for the navbar */
     }
 
     .card {
-        background-color:rgba(229, 221, 235, 0.53); /* White background for cards */
-        color: black; /* Text color for cards */
+        background-color: rgb(98, 5, 164); /* Indigo background for cards */
+        color: white; /* White text color for cards */
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.8); /* 50% opacity shadow */
         transition: box-shadow 0.3s ease-in-out; /* Smooth transition for hover effect */
         margin: auto; /* Center the card */
@@ -21,13 +32,32 @@
         box-shadow: 0 8px 12px rgba(0, 0, 0, 0.5); /* Hover effect with stronger shadow */
     }
 
+    .card-header {
+        background-color: rgb(133, 97, 159); /* Slightly lighter indigo for card header */
+        color: white; /* White text color */
+    }
+
+    .card-body {
+        background-color: rgb(98, 5, 164); /* Indigo background for card body */
+        color: white; /* White text color */
+    }
+
+    .card-link {
+        text-decoration: none;
+        color: white; /* White text color for links */
+    }
+
+    .card-link:hover {
+        color: #FFD700; /* Gold color for hover */
+    }
+
     /* Bottom Navbar Styles */
     .bottom-navbar {
         position: fixed;
         bottom: 0;
         left: 0;
         right: 0;
-        background-color:rgb(84, 63, 100); /* Indigo color */
+        background-color: rgb(84, 63, 100); /* Indigo color */
         padding: 10px 0;
         display: flex;
         justify-content: space-around;
@@ -148,52 +178,4 @@
         <span>Tips</span>
     </a>
 </div>
-
-<style>
-    /* General Bottom Navbar Styles */
-    .bottom-navbar {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background-color: rgb(84, 63, 100); /* Indigo color */
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        padding: 10px 0;
-        box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.2);
-        z-index: 1000;
-    }
-
-    .bottom-navbar a {
-        display: flex;
-        flex-direction: column; /* Align icons above text */
-        justify-content: center;
-        align-items: center;
-        color: white;
-        text-decoration: none;
-        font-size: 14px;
-        padding: 5px;
-        transition: color 0.3s ease, transform 0.3s ease;
-    }
-
-    .bottom-navbar a:hover {
-        color: #FFD700; /* Gold color for hover */
-        transform: scale(1.1); /* Slightly enlarge on hover */
-    }
-
-    .bottom-navbar i {
-        font-size: 20px; /* Icon size */
-        margin-bottom: 4px; /* Space between icon and text */
-    }
-
-    .bottom-navbar span {
-        font-size: 12px; /* Text size below the icons */
-    }
-
-    /* Make sure the page content doesn't overlap the navbar */
-    .container {
-        padding-bottom: 80px; /* Adjusted padding to the bottom */
-    }
-</style>
 @endsection

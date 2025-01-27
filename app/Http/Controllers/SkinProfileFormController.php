@@ -43,7 +43,7 @@ class SkinProfileFormController extends Controller
         });
     }
 
-    $forms = $query->paginate(10); // Paginate the results, 10 per page
+    $forms = $query->paginate(3); // Paginate the results, 3 per page
 
     return view('SkinProfileForm.index', compact('forms'));
 }
@@ -243,15 +243,15 @@ public function destroy(SkinProfileForm $SkinProfileForm)
 
 
 public function visualization()
-{
-    $user_id = auth()->id(); // Get the logged-in user's ID
-    $profiles = SkinProfileForm::where('user_id', $user_id)->get();
-    $availableDates = SkinProfileForm::where('user_id', $user_id)
-                                     ->selectRaw('DATE(created_at) as date')
-                                     ->distinct()
-                                     ->pluck('date');
-    return view('SkinProfileForm.visualization', compact('profiles', 'availableDates'));
-}
+    {
+        $user_id = auth()->id(); // Get the logged-in user's ID
+        $profiles = SkinProfileForm::where('user_id', $user_id)->paginate(10); // Paginate the results
+        $availableDates = SkinProfileForm::where('user_id', $user_id)
+                                         ->selectRaw('DATE(created_at) as date')
+                                         ->distinct()
+                                         ->pluck('date');
+        return view('SkinProfileForm.visualization', compact('profiles', 'availableDates'));
+    }
 
 public function fetchDataByDateRange(Request $request)
 {
@@ -290,6 +290,8 @@ public function fetchDataByDateRange(Request $request)
 
     return response()->json($profiles);
 }
+
+
 
 }
 

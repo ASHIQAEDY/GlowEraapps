@@ -150,6 +150,7 @@
         </div>
 
         <!-- Card 4 -->
+        
         <div class="col">
             <a href="{{ route('visualization')}}" class="card-link">
                 <div class="card">
@@ -160,6 +161,7 @@
                 </div>
             </a>
         </div>
+      
     </div>
 </div>
 

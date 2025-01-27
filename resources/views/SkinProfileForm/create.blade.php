@@ -3,39 +3,7 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
 @section('content')
-<!-- Add custom styles to match home page background -->
-<style>
-    body {
-        background-color:rgb(81, 13, 130);  !important; /* Indigo - same as home */
-        color: white;
-    }
-
-    .card {
-        background-color: rgba(229, 221, 235, 0.53); /* Same as home cards */
-        color: black;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.8);
-        transition: box-shadow 0.3s ease-in-out;
-    }
-
-    .card:hover {
-        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.5);
-    }
-
-    .btn-outline-primary {
-        color: white !important; /* Force text color to white */
-        border-color: white !important; /* Optional: Match border color to white */
-    }
-    .btn-outline-primary.active, 
-    .btn-outline-primary:hover, 
-    .btn-outline-primary:focus {
-        background-color: rgb(206, 154, 243) !important; /* Ensure active button stays white */
-        color: rgb(162, 139, 179) !important; /* Contrast text color for active buttons */
-    }
-    .btn-group-toggle .btn {
-        border-radius: 4px;
-    }
-</style>
-<div class="container" style="padding-bottom: 150px;"> <!-- Add more padding to the bottom -->
+<div class="container" style="padding-bottom: 150px; background-color:rgb(81, 13, 130); color: white;"> <!-- Add more padding to the bottom -->
    
     <h4 class="text-center mb-4">Please Rate The Severity Of Your Skin Concerns</h4>
     <!-- Back to Home Button in the Header -->
@@ -148,12 +116,46 @@
 
 <!-- Responsive Styles -->
 <style>
+    body {
+        background-color:rgb(81, 13, 130);  !important; /* Indigo - same as home */
+        color: white;
+    }
+
+    .card {
+        background-color: rgba(229, 221, 235, 0.53); /* Same as home cards */
+        color: black;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.8);
+        transition: box-shadow 0.3s ease-in-out;
+    }
+
+    .card:hover {
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.5);
+    }
+
+    .btn-outline-primary {
+        color: white !important; /* Force text color to white */
+        border-color: white !important; /* Optional: Match border color to white */
+    }
+
+    .btn-outline-primary.active, 
+    .btn-outline-primary:hover, 
+    .btn-outline-primary:focus {
+        background-color: rgb(206, 154, 243) !important; /* Ensure active button stays white */
+        color: rgb(162, 139, 179) !important; /* Contrast text color for active buttons */
+    }
+
+    .btn-group-toggle .btn {
+        border-radius: 4px;
+    }
+
     .form-group {
         margin-bottom: 1.5rem;
     }
+    
     .btn-group-toggle .btn {
         margin-bottom: 0.5rem;
     }
+
     .form-control {
         max-width: 100%; /* Ensure the input fields are not too wide */
     }
@@ -215,8 +217,10 @@
 
     /* Make sure the page content doesn't overlap the navbar */
     .container-fluid {
-        padding-bottom: 150px; /* Add padding equal to navbar height */.container {
         padding-bottom: 150px; /* Add padding equal to navbar height */
+    }
+    .container {
+        padding-bottom: 10px; /* Add padding equal to navbar height */
     }
 </style>
 @endsection

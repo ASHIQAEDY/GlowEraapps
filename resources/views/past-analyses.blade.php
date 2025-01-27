@@ -187,8 +187,19 @@
             {{ session('success') }}
         </div>
     @endif
+
+    <!-- Search Form -->
+    <form method="GET" action="{{ route('past-analyses.index') }}" class="mb-4">
+        <div class="input-group">
+            <input type="date" name="date" class="form-control" value="{{ request('date') }}">
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </div>
+    </form>
+
     @if(isset($pastAnalyses) && count($pastAnalyses) > 0)
-        @foreach($pastAnalyses->sortByDesc('created_at') as $pastAnalysis)
+        @foreach($pastAnalyses as $pastAnalysis)
             <div class="face-result">
                 <h2>Past Analysis</h2>
                 <section>
@@ -223,11 +234,38 @@
                 </form>
             </div>
         @endforeach
-        <div class="pagination">
-            {{ $pastAnalyses->links() }}
-        </div>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-end">
+                @if ($pastAnalyses->onFirstPage())
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                    </li>
+                @else
+                    <li class="page-item">
+                        <a class="page-link" href="{{ $pastAnalyses->previousPageUrl() }}" tabindex="-1" aria-disabled="true">Previous</a>
+                    </li>
+                @endif
+
+                @for ($i = 1; $i <= $pastAnalyses->lastPage(); $i++)
+                    <li class="page-item {{ $i == $pastAnalyses->currentPage() ? 'active' : '' }}">
+                        <a class="page-link" href="{{ $pastAnalyses->url($i) }}">{{ $i }}</a>
+                    </li>
+                @endfor
+
+                @if ($pastAnalyses->hasMorePages())
+                    <li class="page-item">
+                        <a class="page-link" href="{{ $pastAnalyses->nextPageUrl() }}">Next</a>
+                    </li>
+                @else
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#">Next</a>
+                    </li>
+                @endif
+            </ul>
+        </nav>
     @else
         <p>No past analyses found.</p>
+        <a href="{{ route('past-analyses.index') }}" class="btn btn-primary">Back </a>
     @endif
 </div>
 

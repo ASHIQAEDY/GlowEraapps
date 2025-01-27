@@ -34,7 +34,8 @@
 
     /* Fixed Size Button Styling */
     .fixed-size-btn {
-        width: 100px; /* Fixed width */
+        
+        width: 150px; /* Fixed width */
         height: 40px; /* Fixed height */
         display: flex;
         justify-content: center;
@@ -147,15 +148,64 @@
     .bottom-navbar span {
         font-size: 12px; /* Text size below the icons */
     }
+
+    /* Pagination Styling */
+    .pagination {
+        justify-content: end;
+    }
+    .page-item.disabled .page-link {
+        color: #6c757d;
+        pointer-events: none;
+        background-color: #fff;
+        border-color: #dee2e6;
+    }
+    .page-item .page-link {
+        color: #007bff;
+        background-color: #fff;
+        border: 1px solid #dee2e6;
+    }
+    .page-item.active .page-link {
+        z-index: 1;
+        color: #fff;
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+    .page-link {
+        position: relative;
+        display: block;
+        padding: 0.5rem 0.75rem;
+        margin-left: -1px;
+        line-height: 1.25;
+        color: #007bff;
+        background-color: #fff;
+        border: 1px solid #dee2e6;
+    }
+    .page-link:hover {
+        color: #0056b3;
+        text-decoration: none;
+        background-color: #e9ecef;
+        border-color: #dee2e6;
+    }
 </style>
 
 @section('content')
 <div class="container">
     <h1>SKIN HEALTH TIPS</h1>
+    
+    <!-- Search Form -->
+    <form method="GET" action="{{ route('Tips.index') }}" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="search" class="form-control" placeholder="Search by category or title" value="{{ request()->query('search') }}">
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </div>
+    </form>
+
     <!-- Conditionally show the "Create New Tip" button only if the user has UserLevel = 0 -->
     @if(Auth::user()->UserLevel == 0)
         <div class="button-group mt-3">
-            <a href="{{ route('Tips.create') }}" class="btn btn-success"><i class="fa fa-plus-circle"></i> Create New Tip</a>
+            <a href="{{ route('Tips.create') }}" class="btn btn-success fixed-size-btn"><i class="fa fa-plus-circle"></i> Create New Tip</a>
         </div>
     @endif
 
@@ -167,34 +217,51 @@
     @endif
 
     <!-- Show all the tips -->
-    <ul>
-        @foreach($tips as $tip)
-            <li>
-                <!-- Tip Card -->
-                <div class="tip-card">
-                    <h3>{{ $tip->title }}</h3>
-                    <small>Category: {{ $tip->category }}</small>
+    @if($tips->isEmpty())
+        <div class="alert alert-warning">
+            No tips found. 
+            <div class="button-group mt-3">
+                <a href="{{ route('Tips.index') }}" class="btn btn-secondary fixed-size-btn">Back</a>
+                
+            </div>
+        </div>
+    @else
+        <ul>
+            @foreach($tips as $tip)
+                <li>
+                    <!-- Tip Card -->
+                    <div class="tip-card">
+                        <h3>{{ $tip->title }}</h3>
+                        <small>Category: {{ $tip->category }}<br>Updated at: {{ $tip->updated_at->format('d M Y, h:i A') }}</small>
 
-                    <div class="button-group">
-                        <!-- View Button -->
-                        <a href="{{ route('Tips.show', $tip->id) }}" class="btn btn-primary fixed-size-btn" style="background-color:rgb(235, 235, 64); color:rgb(0, 0, 0); border-color:rgb(0, 0, 0);">
-                            <i class="fa fa-eye" style="color:rgb(23, 31, 31);"></i> Read 
-                        </a>
+                        <div class="button-group" style="justify-content: space-between;">
+                            <!-- View Button -->
+                            <a href="{{ route('Tips.show', $tip->id) }}" class="btn btn-primary fixed-size-btn" style="background-color:rgb(228, 247, 186); color:rgb(0, 0, 0); border-color:rgb(0, 0, 0);">
+    <i class="fa fa-eye" style="color:rgb(23, 31, 31);"></i> Read 
+</a>
 
-                        <!-- Conditionally show the "Edit" button only if the user has UserLevel = 0 -->
-                        @if(Auth::user()->UserLevel == 0)
-                            <!-- Delete Button -->
-                            <form action="{{ route('Tips.destroy', $tip->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this tip?')" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger fixed-size-btn"><i class="fa fa-trash"></i> Delete</button>
-                            </form>
-                        @endif
+                            <!-- Conditionally show the "Edit" button only if the user has UserLevel = 0 -->
+                            @if(Auth::user()->UserLevel == 0)
+                                <!-- Delete Button -->
+                                <form action="{{ route('Tips.destroy', $tip->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this tip?')" style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger fixed-size-btn"><i class="fa fa-trash"></i> Delete</button>
+                                </form>
+                            @endif
+                        </div>
                     </div>
-                </div>
-            </li>
-        @endforeach
-    </ul>
+                </li>
+            @endforeach
+        </ul>
+
+        <!-- Pagination Links -->
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-end">
+                {{ $tips->links('pagination::bootstrap-4') }}
+            </ul>
+        </nav>
+    @endif
 </div>
 
 <!-- Bottom Navbar -->

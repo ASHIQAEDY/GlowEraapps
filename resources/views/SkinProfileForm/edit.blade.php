@@ -9,7 +9,7 @@
     <h1>Edit your Profile</h1>
     @endif
     @if(auth()->user()->UserLevel == 0)
-    <h1>Edit User Profile</h1>
+    <h1>Edit </h1>
     @endif
     @if(auth()->user()->UserLevel == 1)
     <!-- Guiding Information for Rating Scale -->

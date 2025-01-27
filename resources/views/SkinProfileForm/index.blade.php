@@ -87,7 +87,7 @@
         @endforeach
     </div>
     <div class="d-flex justify-content-center">
-        {{ $forms->links() }}
+        {{ $forms->links('pagination::bootstrap-4') }}
     </div>
     @endif
 

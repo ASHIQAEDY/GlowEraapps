@@ -39,12 +39,17 @@ class FaceDetectionController extends Controller
         return view('face-detection-result', ['result' => $result, 'analysis' => $analysis, 'pastAnalyses' => $pastAnalyses]);
     }
 
-    public function showPastAnalyses()
+    public function showPastAnalyses(Request $request)
     {
-        // Retrieve past analyses with pagination
-        $pastAnalyses = FaceAnalysis::where('user_id', Auth::id())->paginate(5);
+        $query = FaceAnalysis::where('user_id', Auth::id());
 
-        return view('past-analyses', ['pastAnalyses' => $pastAnalyses]);
+    if ($request->has('date')) {
+        $query->whereDate('created_at', $request->input('date'));
+    }
+
+    $pastAnalyses = $query->orderBy('created_at', 'desc')->paginate(2);
+
+    return view('past-analyses', ['pastAnalyses' => $pastAnalyses]);
     }
 
     private function analyzeSkin($result)

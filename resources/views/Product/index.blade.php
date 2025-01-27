@@ -221,8 +221,13 @@
 
     <!-- Mobile View Table Conversion -->
     @if($products->isEmpty())
-        <div class="alert alert-warning">
-            No products found. Please try searching for something else.
+        <div class="alert alert-warning text-center">
+            No products found. Please try for something else.
+        </div>
+        <div class="text-center mt-4">
+            <a href="{{ route('Product.create') }}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Create New Product
+            </a>
         </div>
     @else
         <div class="row list-view" id="productContainer">
@@ -251,13 +256,12 @@
                                     <img src="{{$product->image}}" style="width:70px;height:70px;">
                                 </p>
                             @endif
-
-                            <!-- Actions: Edit & Delete -->
-                            <div class="button-group">
+                                <!-- Actions: Edit & Delete -->
+                                <div class="button-group">
                                 <!-- Edit Button -->
                                 <a href="{{ route('Product.edit', $product->ProductID) }}" 
                                    class="btn btn-primary btn-sm" 
-                                   style="background-color: rgb(87, 221, 219); border-color: #6a0dad;        padding: 8px; font-size: 16px; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; border-radius: 50%;">
+                                   style="background-color: rgb(87, 221, 219); border-color: #6a0dad; padding: 8px; font-size: 16px; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; border-radius: 50%;">
                                     <i class="fas fa-edit" style="color: white;"></i>
                                 </a>
 

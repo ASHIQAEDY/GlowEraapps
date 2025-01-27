@@ -48,9 +48,6 @@
     h1 {
         margin: 20px 0;
     }
-    .date-picker {
-        margin: 20px 0;
-    }
     .table-container {
         width: 100%;
         max-width: 800px;
@@ -59,6 +56,7 @@
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         margin-bottom: 20px;
+        overflow-x: auto; /* Enable horizontal scrolling */
     }
 
     table {
@@ -79,9 +77,12 @@
     }
 
     @media (max-width: 600px) {
-        .table-container {
-            width: 100%;
+        th, td {
             padding: 5px;
+            font-size: 12px; /* Adjust font size for smaller screens */
+        }
+        .table-container {
+            padding: 2px;
         }
     }
 </style>
@@ -94,18 +95,11 @@
 </head>
 <body>
     <h1>Skin Profile Data Visualization</h1>
-    <div class="date-picker">
-        <label for="startDate">Start Date: </label>
-        <input type="date" id="startDate" name="startDate">
-        <label for="endDate">End Date: </label>
-        <input type="date" id="endDate" name="endDate">
-        <button id="fetchData">Fetch Data</button>
-    </div>
     <div class="available-dates">
         <h2>Available Dates</h2>
         <ul>
             @foreach($availableDates as $date)
-                <li>{{ $date }}</li>
+                <li>{{ \Carbon\Carbon::parse($date)->format('d-m-Y') }}</li>
             @endforeach
         </ul>
     </div>
@@ -125,87 +119,49 @@
                     <th>Firmness</th>
                     <th>Dark Circles</th>
                     <th>Total Score</th>
+                    <th>Skin Concern Status</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- Data will be populated here -->
+                @foreach($profiles as $profile)
+                    <tr>
+                        <td>{{ \Carbon\Carbon::parse($profile->created_at)->format('d-m-Y') }}</td>
+                        <td>{{ $profile->Acne }}</td>
+                        <td>{{ $profile->FineLine }}</td>
+                        <td>{{ $profile->Darkspots }}</td>
+                        <td>{{ $profile->Redness }}</td>
+                        <td>{{ $profile->Dryness }}</td>
+                        <td>{{ $profile->Oily }}</td>
+                        <td>{{ $profile->PoresRate }}</td>
+                        <td>{{ $profile->Irritation }}</td>
+                        <td>{{ $profile->Firmness }}</td>
+                        <td>{{ $profile->Darkcircles }}</td>
+                        <td>{{ $profile->TotalScore }}</td>
+                        <td>{{ $profile->InterpretationStatus }}</td>
+                    </tr>
+                @endforeach
             </tbody>
         </table>
+        <div class="pagination">
+            {{ $profiles->links() }}
+        </div>
     </div>
 
-    <script>
-     $('#fetchData').on('click', function() {
-    var startDate = $('#startDate').val();
-    var endDate = $('#endDate').val();
-
-    if (!startDate || !endDate) {
-        alert('Please select both start and end dates.');
-        return;
-    }
-
-    console.log('Start Date:', startDate);
-    console.log('End Date:', endDate);
-
-    $.ajax({
-        url: '{{ route("SkinProfileForm.fetchDataByDateRange") }}',
-        method: 'POST',
-        data: {
-            _token: '{{ csrf_token() }}',
-            startDate: startDate,
-            endDate: endDate
-        },
-        success: function(response) {
-            console.log(response); // Log the response to check the data
-
-            if (response.length < 2) {
-                alert('Please select a date range that includes at least two dates with data.');
-                return;
-            }
-
-            var tableBody = $('#dataTable tbody');
-            tableBody.empty(); // Clear existing data
-
-            response.forEach(function(profile) {
-                var row = `<tr>
-                    <td>${new Date(profile.created_at).toLocaleDateString()}</td>
-                    <td>${profile.Acne}</td>
-                    <td>${profile.FineLine}</td>
-                    <td>${profile.Darkspots}</td>
-                    <td>${profile.Redness}</td>
-                    <td>${profile.Dryness}</td>
-                    <td>${profile.Oily}</td>
-                    <td>${profile.PoresRate}</td>
-                    <td>${profile.Irritation}</td>
-                    <td>${profile.Firmness}</td>
-                    <td>${profile.Darkcircles}</td>
-                    <td>${profile.total_score}</td>
-                </tr>`;
-                tableBody.append(row);
-            });
-        },
-        error: function(xhr, status, error) {
-            console.error('Error fetching data:', error);
-            alert('An error occurred while fetching data. Please try again.');
-        }
-    });
-});
-</script>
-</body>
-</html>
-
-<!-- Bottom Navbar -->
-<div class="bottom-navbar">
-    <a href="#">
+    <!-- Bottom Navbar -->
+    <div class="bottom-navbar">
+    <a href="{{ route('Aboutus.index') }}">
         <i class="fas fa-info-circle"></i>
-        About us
+        <span>About Us</span>
     </a>
     <a href="{{ route('home') }}">
         <i class="fas fa-home"></i>
-        Home
+        <span>Home</span>
     </a>
-    <a href="#">
+    <a href="{{ route('Tips.index') }}">
         <i class="fas fa-lightbulb"></i>
-        Tips
+        <span>Tips</span>
     </a>
 </div>
+</body>
+</html>
 @endsection

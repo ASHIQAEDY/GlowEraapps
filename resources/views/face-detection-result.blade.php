@@ -147,7 +147,7 @@
     }
 
     .container {
-        padding-bottom: 40px;
+        padding-bottom: 60px;
     }
 </style>
 
@@ -160,7 +160,7 @@
             <p><strong>Gender:</strong> {{ $analysis['gender'] }}</p>
             <p><strong>Face Age:</strong> {{ $analysis['age'] }}</p>
             <p><strong>Smile:</strong> {{ $analysis['smile'] }}</p>
-            <p><strong>Head Pose:</strong> Pitch: {{ $analysis['headpose']['pitch'] }}, Roll: {{ $analysis['headpose']['roll'] }}, Yaw: {{ $analysis['headpose']['yaw'] }}</p>
+            
             <p><strong>Blur:</strong> {{ $analysis['blur'] }}</p>
             <p><strong>Eye Status:</strong> Left Eye: {{ $analysis['eye_status']['left_eye'] }}, Right Eye: {{ $analysis['eye_status']['right_eye'] }}</p>
             <p><strong>Dominant Emotion:</strong> {{ ucfirst($analysis['emotion']) }}</p>

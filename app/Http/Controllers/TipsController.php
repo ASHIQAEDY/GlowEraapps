@@ -11,19 +11,29 @@ class TipsController extends Controller
      * Display a listing of the resource.
      */
    
-     public function index()
-     {
-         $user = auth()->user(); // Get the currently authenticated user
-     
-         if ($user && $user->UserLevel == 0) { // If the user is an admin (UserLevel 0)
-             $tips = Tips::orderBy('created_at', 'desc')->get(); // Fetch all tips, ordered by creation date (most recent first)
-         } else {
-             $tips = Tips::where('user_id', 3)->orderBy('created_at', 'desc')->get(); // Only fetch tips created by the admin, ordered by creation date
-         }
-     
-         return view('Tips.index', compact('tips'));
-     }
-     
+     public function index(Request $request)
+{
+    $user = auth()->user(); // Get the currently authenticated user
+    $query = Tips::query(); // Initialize the query builder
+
+    // Apply search filter if a search query is provided
+    if ($request->has('search')) {
+        $search = $request->input('search');
+        $query->where(function ($q) use ($search) {
+            $q->where('title', 'like', '%' . $search . '%')
+              ->orWhere('category', 'like', '%' . $search . '%');
+        });
+    }
+
+    // Apply user-specific filters
+    if ($user && $user->UserLevel == 0) { // If the user is an admin (UserLevel 0)
+        $tips = $query->orderBy('created_at', 'desc')->paginate(3); // Fetch all tips with pagination
+    } else {
+        $tips = $query->where('user_id', 3)->orderBy('created_at', 'desc')->paginate(3); // Fetch tips created by the admin with pagination
+    }
+
+    return view('Tips.index', compact('tips'));
+}
 
     /**
      * Show the form for creating a new resource.
